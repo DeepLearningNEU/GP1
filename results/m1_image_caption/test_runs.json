@@ -1,0 +1,112 @@
+[
+ {
+  "file_name": "images/000000191881.jpg",
+  "caption": "A small glass filled with a small bouquet of flowers",
+  "gpt2_ids": [
+   32,
+   1402,
+   5405,
+   5901,
+   351,
+   257,
+   1402,
+   35833,
+   21108,
+   286,
+   12734
+  ],
+  "image_emb_dim": 768,
+  "similarity": 0.2326,
+  "best_match_correct": true
+ },
+ {
+  "file_name": "images/000000264255.jpg",
+  "caption": "A girl sticks her head in a microwave",
+  "gpt2_ids": [
+   32,
+   2576,
+   16461,
+   607,
+   1182,
+   287,
+   257,
+   27000
+  ],
+  "image_emb_dim": 768,
+  "similarity": 0.302,
+  "best_match_correct": true
+ },
+ {
+  "file_name": "images/000000433968.jpg",
+  "caption": "A view of military air force planes the \"blue angles\" against a blue sky.",
+  "gpt2_ids": [
+   32,
+   1570,
+   286,
+   2422,
+   1633,
+   2700,
+   13016,
+   262,
+   366,
+   17585,
+   18333,
+   1,
+   1028,
+   257,
+   4171,
+   6766,
+   13
+  ],
+  "image_emb_dim": 768,
+  "similarity": 0.2674,
+  "best_match_correct": true
+ },
+ {
+  "file_name": "images/000000556149.jpg",
+  "caption": "Black and white photograph of people with bicycles and skateboards next to a ramp.",
+  "gpt2_ids": [
+   9915,
+   290,
+   2330,
+   8408,
+   286,
+   661,
+   351,
+   35426,
+   290,
+   22647,
+   12821,
+   1306,
+   284,
+   257,
+   10454,
+   13
+  ],
+  "image_emb_dim": 768,
+  "similarity": 0.2641,
+  "best_match_correct": true
+ },
+ {
+  "file_name": "images/000000360693.jpg",
+  "caption": "A red bus turning into a parking lot next to a street.",
+  "gpt2_ids": [
+   32,
+   2266,
+   1323,
+   6225,
+   656,
+   257,
+   7647,
+   1256,
+   1306,
+   284,
+   257,
+   4675,
+   13
+  ],
+  "image_emb_dim": 768,
+  "similarity": 0.1772,
+  "best_match_correct": true
+ }
+]

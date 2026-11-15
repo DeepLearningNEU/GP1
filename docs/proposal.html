@@ -4,48 +4,65 @@
 <meta charset="utf-8">
 <title>GP1 Project Proposal</title>
 <style>
-  @page { size: Letter; margin: 0.6in 0.7in; }
-  body { font-family: "Times New Roman", Times, serif; font-size: 10.5pt; line-height: 1.32; color: #000; margin: 0; }
-  h1 { font-size: 15pt; text-align: center; margin: 0 0 2px; }
-  .sub { text-align: center; font-size: 10pt; margin-bottom: 8px; }
-  h2 { font-size: 11pt; margin: 9px 0 3px; border-bottom: 1px solid #999; padding-bottom: 1px; }
-  p { margin: 0 0 4px; text-align: justify; }
-  ul { margin: 0 0 4px; padding-left: 18px; }
-  li { margin: 0 0 2px; }
-  table { width: 100%; border-collapse: collapse; font-size: 9.8pt; margin-top: 3px; }
-  th, td { border: 1px solid #999; padding: 2px 5px; text-align: left; vertical-align: top; }
+  @page { size: Letter; margin: 0.7in 0.75in; }
+  body { font-family: "Times New Roman", Times, serif; font-size: 11pt; line-height: 1.35; color: #000; margin: 0; }
+  .cover { height: 9.3in; display: flex; flex-direction: column; justify-content: center; text-align: center; page-break-after: always; }
+  .cover h1 { font-size: 22pt; margin: 0 0 10px; line-height: 1.25; }
+  .cover .kind { font-size: 15pt; margin-bottom: 48px; }
+  .cover .meta { font-size: 12.5pt; line-height: 1.8; }
+  h2 { font-size: 12pt; margin: 12px 0 4px; border-bottom: 1px solid #999; padding-bottom: 1px; }
+  ul { margin: 0 0 5px; padding-left: 18px; }
+  li { margin: 0 0 3px; text-align: justify; }
+  table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+  th, td { border: 1px solid #999; padding: 3px 6px; text-align: left; }
   th { background: #eee; }
-  .ph { color: #a00; }
 </style>
 </head>
 <body>
-<h1>From Words to Worlds: Text-to-Image Generation with a Transformer Text Encoder and Latent Diffusion</h1>
-<div class="sub">IE 7615 Deep Learning for AI &middot; Generative Project Proposal &middot; Repository: github.com/DeepLearningNEU/GP1</div>
 
-<h2>1. Goal</h2>
-<p>We will build and study a text-to-image pipeline in which a Transformer text encoder conditions a diffusion model. Starting from a pre-trained
-Stable Diffusion model, we will fine-tune it on paired image&ndash;caption data, then measure how sampling and conditioning choices affect image quality,
-diversity, and text&ndash;image alignment.</p>
+<div class="cover">
+  <h1>From Words to Worlds:<br>Text-to-Image Generation Using<br>Transformer and Diffusion Models</h1>
+  <div class="kind">Project Proposal</div>
+  <div class="meta">
+    IE 7615 Deep Learning for AI<br>
+    Generative Project<br><br>
+    <b>Team members:</b> Zhiming Hu, Wan Luo<br>
+    November 14, 2026<br><br>
+    Code repository: github.com/DeepLearningNEU/GP1
+  </div>
+</div>
 
-<h2>2. Dataset</h2>
+<h2>1. Dataset</h2>
 <ul>
-  <li><b>COCO 2017 Captions.</b> <i>Fine-tuning set:</i> 5,000 randomly sampled train2017 image&ndash;caption pairs (seed 42).
-      <i>Evaluation set:</i> all 5,000 val2017 images, used as the FID/IS reference distribution; their captions are the generation prompts.</li>
-  <li><b>Preprocessing.</b> For each image we keep one caption, chosen at random among those with 5&ndash;30 words so that it fits CLIP's 77-token limit.
-      Images are resized on the short side, center-cropped to 512&times;512, and normalized to [&minus;1, 1]. Captions are tokenized and embedded with the CLIP text encoder.</li>
+  <li><b>Source: COCO 2017 Captions.</b> Each image has five human-written captions.
+    <ul>
+      <li><i>Main set:</i> 5,000 randomly sampled train2017 image&ndash;caption pairs (seed 42).</li>
+      <li><i>Evaluation set:</i> all 5,000 val2017 images, used later as the FID/IS reference distribution.</li>
+    </ul></li>
+  <li><b>Cleaning.</b> For each image we keep one caption, chosen at random among those with 5&ndash;30 words. Very short or very long captions are discarded, so every
+      kept caption fits the 77-token context of the CLIP text encoder. All 10,000 images downloaded and decoded without errors.</li>
+  <li><b>Image preprocessing.</b> Images are resized on the short side and center-cropped to 512&times;512. For the diffusion model they are normalized to [&minus;1, 1].
+      For the CLIP image encoder they are resized to 224&times;224 with CLIP's mean/std normalization.</li>
+  <li><b>Caption preprocessing.</b> Captions are tokenized with the GPT-2 byte-level BPE tokenizer (vocabulary of 50,257). The end-of-text token is reused for padding,
+      and captions are padded to a fixed length. They are also tokenized with the CLIP tokenizer for text conditioning.</li>
 </ul>
 
-<h2>3. Model and Method</h2>
+<h2>2. Model</h2>
 <ul>
-  <li><b>Text encoder (Transformer):</b> CLIP ViT-L/14 text encoder, a 12-layer Transformer with 123M parameters. It maps each caption to a 77&times;768 embedding sequence.</li>
-  <li><b>Generator (diffusion):</b> Stable Diffusion v1.5. Its VAE compresses images to 64&times;64&times;4 latents, and a UNet denoiser reads the text embeddings through cross-attention.</li>
-  <li><b>Fine-tuning:</b> LoRA adapters on the UNet attention layers, trained on the 5,000 COCO pairs with the standard noise-prediction (MSE) objective. The text encoder and VAE stay frozen.</li>
-  <li><b>Experiments:</b> (i) noise schedulers (DDPM, DDIM, PNDM, DPM-Solver) &times; sampling steps (10&ndash;100);
-      (ii) classifier-free guidance scale (1&ndash;15); (iii) conditioning strength; (iv) choice of text embedding;
-      (v) base vs. LoRA-fine-tuned model.</li>
+  <li><b>Image &rarr; embedding:</b> CLIP ViT-L/14 vision Transformer. It splits each 224&times;224 image into 14&times;14-pixel patches (256 patches plus one [CLS] token),
+      and the [CLS] output is projected to a 768-dimensional image embedding. Embeddings for all 5,000 images are pre-computed.</li>
+  <li><b>Text side:</b> GPT-2 tokenizer for caption tokens. The CLIP ViT-L/14 text encoder (a 12-layer Transformer) maps a caption to a 77&times;768 embedding sequence in the same space as the image embeddings.</li>
+  <li><b>Generator:</b> Stable Diffusion v1.5, a latent diffusion model. A VAE compresses images to 64&times;64&times;4 latents, and a UNet denoiser is conditioned on the text embeddings through cross-attention.
+      We will fine-tune it on our COCO pairs with LoRA adapters on the UNet attention layers.</li>
+  <li><b>Planned experiments:</b> noise schedulers and sampling steps, classifier-free guidance scale, conditioning strength, and choice of text embedding.</li>
 </ul>
 
-
+<h2>3. Roles</h2>
+<table>
+  <tr><th style="width:30%">Member</th><th style="width:20%">Contribution</th><th>Responsibilities</th></tr>
+  <tr><td>Zhiming Hu</td><td>50%</td><td>Shared equally across all milestones</td></tr>
+  <tr><td>Wan Luo</td><td>50%</td><td>Shared equally across all milestones</td></tr>
+</table>
 
 </body>
 </html>
