@@ -45,21 +45,7 @@ diversity, and text&ndash;image alignment.</p>
       (v) base vs. LoRA-fine-tuned model.</li>
 </ul>
 
-<h2>4. Evaluation</h2>
-<p><b>Quantitative:</b> FID and Inception Score on 5,000 images generated from the val2017 captions, plus CLIP score for text&ndash;image alignment.
-Guidance scale is swept to trace the fidelity&ndash;diversity trade-off.
-<b>Qualitative:</b> side-by-side grids of prompts and generations, and inspection of failure cases (counting, spatial relations, attribute binding).
-<b>Ethics:</b> discussion of dataset bias in COCO and in the pre-training data, and of misuse risks.</p>
 
-<h2>5. Tools, Compute, and Plan</h2>
-<p>Python, PyTorch, Hugging Face Diffusers / Transformers / PEFT, and torchmetrics. Jobs run on NEU Explorer HPC GPUs (V100 / P100) through SLURM.</p>
-<table>
-  <tr><th style="width:24%">Milestone</th><th>Tasks</th><th style="width:22%">Target date</th></tr>
-  <tr><td>M1 Setup &amp; data</td><td>Environment, COCO pairs, text&rarr;embedding notebook, 5 test generations</td><td>Nov 14</td></tr>
-  <tr><td>M2 Integration &amp; baseline</td><td>LoRA fine-tuning, guidance and scheduler tuning, early samples</td><td class="ph">[date]</td></tr>
-  <tr><td>M3 Evaluation</td><td>FID / IS / CLIP score, sensitivity analysis, draft report</td><td class="ph">[date]</td></tr>
-  <tr><td>M4 Final</td><td>Report, gallery, slides and demo</td><td>Dec 13</td></tr>
-</table>
 
 </body>
 </html>
