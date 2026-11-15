@@ -1,0 +1,38 @@
+{
+  "config": {
+    "prompts": "prompts/m1_test.txt",
+    "out": "results/m1_test",
+    "model": "stable-diffusion-v1-5/stable-diffusion-v1-5",
+    "steps": "50",
+    "guidance": "7.5",
+    "seed": "42",
+    "scheduler": "PNDMScheduler"
+  },
+  "runs": [
+    {
+      "id": 0,
+      "prompt": "A red double-decker bus driving down a busy city street",
+      "seconds": 4.81
+    },
+    {
+      "id": 1,
+      "prompt": "A cat sleeping on a laptop keyboard",
+      "seconds": 2.85
+    },
+    {
+      "id": 2,
+      "prompt": "Two people playing frisbee on a sunny beach",
+      "seconds": 2.88
+    },
+    {
+      "id": 3,
+      "prompt": "A bowl of fresh fruit on a wooden kitchen table",
+      "seconds": 2.86
+    },
+    {
+      "id": 4,
+      "prompt": "A giraffe standing next to a tree in the savanna",
+      "seconds": 2.8
+    }
+  ]
+}
