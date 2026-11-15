@@ -7,8 +7,8 @@
 #SBATCH --mem=32G
 #SBATCH --time=01:00:00
 #SBATCH --output=logs/%x-%j.log
-# Milestone 1 GPU work: run the embedding notebook and the 5 prompt->image test runs.
+# Milestone 1 GPU work: image->embedding notebook (incl. 5 image:caption test runs) + 5 prompt->image samples.
 source slurm/env.sh
 nvidia-smi --query-gpu=name,memory.total --format=csv
-jupyter nbconvert --to notebook --execute --inplace notebooks/01_text_embedding.ipynb
+jupyter nbconvert --to notebook --execute --inplace notebooks/01_image_embedding.ipynb
 python scripts/generate.py --prompts prompts/m1_test.txt --out results/m1_test
