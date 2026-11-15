@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>GP1 Project Proposal</title>
+<style>
+  @page { size: Letter; margin: 0.6in 0.7in; }
+  body { font-family: "Times New Roman", Times, serif; font-size: 10.5pt; line-height: 1.32; color: #000; margin: 0; }
+  h1 { font-size: 15pt; text-align: center; margin: 0 0 2px; }
+  .sub { text-align: center; font-size: 10pt; margin-bottom: 8px; }
+  h2 { font-size: 11pt; margin: 9px 0 3px; border-bottom: 1px solid #999; padding-bottom: 1px; }
+  p { margin: 0 0 4px; text-align: justify; }
+  ul { margin: 0 0 4px; padding-left: 18px; }
+  li { margin: 0 0 2px; }
+  table { width: 100%; border-collapse: collapse; font-size: 9.8pt; margin-top: 3px; }
+  th, td { border: 1px solid #999; padding: 2px 5px; text-align: left; vertical-align: top; }
+  th { background: #eee; }
+  .ph { color: #a00; }
+</style>
+</head>
+<body>
+<h1>From Words to Worlds: Text-to-Image Generation with a Transformer Text Encoder and Latent Diffusion</h1>
+<div class="sub">IE 7615 Deep Learning for AI &middot; Generative Project Proposal &middot; Repository: github.com/DeepLearningNEU/GP1</div>
+
+<h2>1. Goal</h2>
+<p>We will build and study a text-to-image pipeline in which a Transformer text encoder conditions a diffusion model. Starting from a pre-trained
+Stable Diffusion model, we will fine-tune it on paired image&ndash;caption data, then measure how sampling and conditioning choices affect image quality,
+diversity, and text&ndash;image alignment.</p>
+
+<h2>2. Dataset</h2>
+<ul>
+  <li><b>COCO 2017 Captions.</b> <i>Fine-tuning set:</i> 5,000 randomly sampled train2017 image&ndash;caption pairs (seed 42).
+      <i>Evaluation set:</i> all 5,000 val2017 images, used as the FID/IS reference distribution; their captions are the generation prompts.</li>
+  <li><b>Preprocessing.</b> For each image we keep one caption, chosen at random among those with 5&ndash;30 words so that it fits CLIP's 77-token limit.
+      Images are resized on the short side, center-cropped to 512&times;512, and normalized to [&minus;1, 1]. Captions are tokenized and embedded with the CLIP text encoder.</li>
+</ul>
+
+<h2>3. Model and Method</h2>
+<ul>
+  <li><b>Text encoder (Transformer):</b> CLIP ViT-L/14 text encoder, a 12-layer Transformer with 123M parameters. It maps each caption to a 77&times;768 embedding sequence.</li>
+  <li><b>Generator (diffusion):</b> Stable Diffusion v1.5. Its VAE compresses images to 64&times;64&times;4 latents, and a UNet denoiser reads the text embeddings through cross-attention.</li>
+  <li><b>Fine-tuning:</b> LoRA adapters on the UNet attention layers, trained on the 5,000 COCO pairs with the standard noise-prediction (MSE) objective. The text encoder and VAE stay frozen.
+      Training uses about 10% caption dropout, so the model also learns the unconditional prediction that classifier-free guidance needs.</li>
+  <li><b>Experiments:</b> (i) noise schedulers (DDPM, DDIM, PNDM, DPM-Solver) &times; sampling steps (10&ndash;100);
+      (ii) classifier-free guidance scale (1&ndash;15); (iii) conditioning strength; (iv) choice of text embedding;
+      (v) base vs. LoRA-fine-tuned model.</li>
+</ul>
+
+<h2>4. Evaluation</h2>
+<p><b>Quantitative:</b> FID and Inception Score on 5,000 images generated from the val2017 captions, plus CLIP score for text&ndash;image alignment.
+Guidance scale is swept to trace the fidelity&ndash;diversity trade-off.
+<b>Qualitative:</b> side-by-side grids of prompts and generations, and inspection of failure cases (counting, spatial relations, attribute binding).
+<b>Ethics:</b> discussion of dataset bias in COCO and in the pre-training data, and of misuse risks.</p>
+
+<h2>5. Tools, Compute, and Plan</h2>
+<p>Python, PyTorch, Hugging Face Diffusers / Transformers / PEFT, and torchmetrics. Jobs run on NEU Explorer HPC GPUs (V100 / P100) through SLURM.</p>
+<table>
+  <tr><th style="width:24%">Milestone</th><th>Tasks</th><th style="width:22%">Target date</th></tr>
+  <tr><td>M1 Setup &amp; data</td><td>Environment, COCO pairs, text&rarr;embedding notebook, 5 test generations</td><td class="ph">[date]</td></tr>
+  <tr><td>M2 Integration &amp; baseline</td><td>LoRA fine-tuning, guidance and scheduler tuning, early samples</td><td class="ph">[date]</td></tr>
+  <tr><td>M3 Evaluation</td><td>FID / IS / CLIP score, sensitivity analysis, draft report</td><td class="ph">[date]</td></tr>
+  <tr><td>M4 Final</td><td>Report, gallery, slides and demo</td><td>Dec 13</td></tr>
+</table>
+
+<h2>6. Team Roles</h2>
+<p class="ph">[To be filled in by the team.]</p>
+</body>
+</html>
