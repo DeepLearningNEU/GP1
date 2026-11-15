@@ -14,7 +14,7 @@
   ul { margin: 0 0 5px; padding-left: 18px; }
   li { margin: 0 0 3px; text-align: justify; }
   table { width: 100%; border-collapse: collapse; margin-top: 4px; }
-  th, td { border: 1px solid #999; padding: 3px 6px; text-align: left; }
+  th, td { border: 1px solid #999; padding: 3px 6px; text-align: left; vertical-align: middle; }
   th { background: #eee; }
 </style>
 </head>
@@ -63,6 +63,23 @@
   <tr><td>Zhiming Hu</td><td>50%</td><td>Shared equally across all milestones</td></tr>
   <tr><td>Wan Luo</td><td>50%</td><td>Shared equally across all milestones</td></tr>
 </table>
+
+<h2 style="page-break-before:always">4. Sample Image&ndash;Caption Test Runs</h2>
+<p style="margin:0 0 4px; text-align:justify">Five random training pairs were passed through the pipeline: each image was embedded with the CLIP vision encoder, and each caption was tokenized with GPT-2
+and embedded with the CLIP text encoder. Each image was then scored against all five captions by cosine similarity. In all <b>5 of 5</b> runs the image's own caption scored highest.</p>
+<table style="font-size:10pt">
+  <tr><th>#</th><th>Image</th><th>Caption</th><th>GPT-2 tokens</th><th>Similarity</th><th>Correct match</th></tr>
+  <tr><td>1</td><td><img src="figs/000000191881.jpg" style="width:0.85in;height:0.85in;display:block"></td><td>A small glass filled with a small bouquet of flowers</td><td>11</td><td>0.233</td><td>Yes</td></tr>
+  <tr><td>2</td><td><img src="figs/000000264255.jpg" style="width:0.85in;height:0.85in;display:block"></td><td>A girl sticks her head in a microwave</td><td>8</td><td>0.302</td><td>Yes</td></tr>
+  <tr><td>3</td><td><img src="figs/000000433968.jpg" style="width:0.85in;height:0.85in;display:block"></td><td>A view of military air force planes the &quot;blue angles&quot; against a blue sky.</td><td>17</td><td>0.267</td><td>Yes</td></tr>
+  <tr><td>4</td><td><img src="figs/000000556149.jpg" style="width:0.85in;height:0.85in;display:block"></td><td>Black and white photograph of people with bicycles and skateboards next to a ramp.</td><td>16</td><td>0.264</td><td>Yes</td></tr>
+  <tr><td>5</td><td><img src="figs/000000360693.jpg" style="width:0.85in;height:0.85in;display:block"></td><td>A red bus turning into a parking lot next to a street.</td><td>13</td><td>0.177</td><td>Yes</td></tr>
+</table>
+<p style="font-size:9.5pt; text-align:center; margin:3px 0 0">Table 1. Test runs. Similarity is the cosine similarity between the CLIP embeddings of the image and its own caption.</p>
+<figure style="margin:6px 0 0; text-align:center">
+  <img src="../results/m1_image_caption/similarity.png" style="width:33%">
+  <figcaption style="font-size:9.5pt">Figure 1. Similarity of every image (rows) to every caption (columns). The diagonal, i.e. the matching pairs, is the highest in each row.</figcaption>
+</figure>
 
 </body>
 </html>
