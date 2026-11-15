@@ -1,0 +1,18 @@
+# environments / IDE
+.venv/
+env/
+.idea/
+__pycache__/
+.ipynb_checkpoints/
+.DS_Store
+
+# data, weights, caches (live on HPC /scratch)
+data/
+hf_cache/
+checkpoints/
+*.safetensors
+*.ckpt
+*.zip
+
+# slurm logs
+logs/*.log
