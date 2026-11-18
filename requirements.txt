@@ -13,3 +13,4 @@ matplotlib
 jupyter
 nbconvert
 ipykernel
+pycocoevalcap==1.2

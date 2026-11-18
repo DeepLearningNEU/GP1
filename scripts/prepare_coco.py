@@ -83,10 +83,11 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("--out", type=Path, required=True)
     p.add_argument("--n_train", type=int, default=5000)
+    p.add_argument("--n_val", type=int, default=5000, help="val2017 images to keep (5000 = all)")
     p.add_argument("--size", type=int, default=512)
     p.add_argument("--seed", type=int, default=42)
     a = p.parse_args()
     raw = a.out / "raw"
     raw.mkdir(parents=True, exist_ok=True)
     build("train", a.n_train, raw, a.out, a.size, a.seed)
-    build("val", 5000, raw, a.out, a.size, a.seed)
+    build("val", a.n_val, raw, a.out, a.size, a.seed)
