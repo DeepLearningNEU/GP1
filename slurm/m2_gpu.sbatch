@@ -15,7 +15,7 @@
 set -e
 source slurm/env.sh
 nvidia-smi --query-gpu=name,memory.total --format=csv
-python scripts/extract_clip_features.py --data "$GP1_DATA"
+[ -f "$GP1_DATA/val/clip_patches.npy" ] || python scripts/extract_clip_features.py --data "$GP1_DATA"
 for INJ in prefix cross; do
   python scripts/train_caption.py --data "$GP1_DATA" --injection $INJ --epochs 5
   python scripts/eval_decoding.py --data "$GP1_DATA" --injection $INJ --n_images 500
