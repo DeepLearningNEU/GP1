@@ -49,7 +49,7 @@ def loss_curves():
 def gallery(data, inj, rows_by_name, title_lines, path, n=8):
     names = list(rows_by_name)[:n]
     cols = 4
-    fig, axes = plt.subplots(2, cols, figsize=(15, 9.6), dpi=130)
+    fig, axes = plt.subplots(2, cols, figsize=(15, 11.5), dpi=130)
     fig.patch.set_facecolor(SURF)
     for ax, name in zip(axes.flat, names):
         ax.imshow(Image.open(data / "val" / name).resize((320, 320)))
@@ -72,7 +72,7 @@ def main():
             continue
         samples = [json.loads(l) for l in open(sp)]
         stages = list(dict.fromkeys(s["stage"] for s in samples))
-        keep = ["untrained", "step 100", stages[-1]]
+        keep = ["step 100", "step 300", stages[-1]]   # untrained output is unrelated news text; described in the report
         by = {}
         for s in samples:
             by.setdefault(s["file_name"], {"reference": s["reference"]})[s["stage"]] = s["generated"]

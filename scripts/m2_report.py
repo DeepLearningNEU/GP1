@@ -77,7 +77,7 @@ def main():
     sample_rows = ""
     for i, (name, s) in enumerate(by.items(), 1):
         d = dcap.get(name, {})
-        lines = [("Untrained (step 0)", s.get("untrained", "")), ("Step 100", s.get("step 100", "")),
+        lines = [("Step 100", s.get("step 100", "")),
                  ("Step 300", s.get("step 300", "")), (f"Final ({final}), greedy", s.get(final, "")),
                  ("Final, beam-5", d.get("beam-5", "")), ("Final, nucleus p=0.9", d.get("nucleus p=0.9", ""))]
         if xcap.get(name):
@@ -139,7 +139,7 @@ def main():
 <div class="cap">Figure 1. Training loss (every 50 steps) and validation loss (end of each epoch).</div>
 
 <h2>3. Early caption samples</h2>
-<p>Eight fixed validation images (not seen in training). Captions are recorded before training, early in training (steps 100 and 300), and at the end; the last three lines compare decoding strategies and the cross-attention model.</p>
+<p>Eight fixed validation images (not seen in training). Captions are recorded early in training (steps 100 and 300) and at the end; the last three lines compare decoding strategies and the cross-attention model. (Before training, the decoder ignores the image and writes unrelated news-style text; see observation 2.)</p>
 <table class="samples">{sample_rows}</table>
 
 <h2 class="pb">4. Decoding strategies (500 validation images)</h2>
