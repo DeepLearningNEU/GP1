@@ -67,7 +67,12 @@ def main():
     model.load_state_dict(ck["state_dict"]); model.to(dev).eval()
     tok = GPT2TokenizerFast.from_pretrained(GPT2_NAME)
     va = CaptionPairs(a.data / "val", a.injection)
-    idx = list(range(min(a.n_images, len(va.rows))))
+    idx = list(range(min(a.n_images, len(va.rows))))           # metrics are computed on these images
+    # also caption the fixed sample images logged during training (for the galleries), metrics exclude them
+    pos = {r["file_name"]: i for i, r in enumerate(va.rows)}
+    sp = out / "samples_by_stage.jsonl"
+    extra_idx = [] if not sp.exists() else [i for i in dict.fromkeys(pos[json.loads(l)["file_name"]] for l in open(sp)) if i not in set(idx)]
+    gen_idx = idx + extra_idx
     refs = {i: [norm(c) for c in va.rows[i]["captions"]] for i in idx}
     raw_cls = torch.load(a.data / "val" / "clip_cls.pt")["emb"]
 
@@ -78,15 +83,16 @@ def main():
     for name, (strategy, kw) in STRATEGIES.items():
         g = torch.Generator().manual_seed(a.seed)
         caps, t0 = [], time.time()
-        for s in range(0, len(idx), a.bs):
-            chunk = idx[s:s + a.bs]
+        for s in range(0, len(gen_idx), a.bs):
+            chunk = gen_idx[s:s + a.bs]
             if a.injection == "prefix":
                 cond = model.condition(clip_emb=va.cls[chunk].to(dev))
             else:
                 cond = model.condition(patches=torch.from_numpy(np.array(va.patches[chunk], dtype=np.float32)).to(dev))
             extra = {"generator": g} if strategy == "nucleus" else {}
             caps += [tok.decode(c).strip() for c in decode(model, cond, strategy, **kw, **extra)]
-        sec = (time.time() - t0) / len(idx)
+        sec = (time.time() - t0) / len(gen_idx)
+        all_gen, caps = caps, caps[:len(idx)]
         hyp = {i: [norm(c) or "empty"] for i, c in zip(idx, caps)}
         bleu, _ = Bleu(4).compute_score(refs, hyp, verbose=0)
         cider, _ = Cider().compute_score(refs, hyp)
@@ -99,7 +105,8 @@ def main():
                "repeated_bigram_rate": np.mean([max(Counter(zip(w, w[1:])).values(), default=0) > 1 for w in (c.split() for c in nc)]),
                "sec_per_image": sec}
         rows.append(row)
-        all_caps += [{"strategy": name, "file_name": va.rows[i]["file_name"], "caption": c} for i, c in zip(idx, caps)]
+        all_caps += [{"strategy": name, "file_name": va.rows[i]["file_name"], "caption": c, "in_metrics": i in set(idx)}
+                     for i, c in zip(gen_idx, all_gen)]
         print({k: (round(v, 4) if isinstance(v, float) else v) for k, v in row.items()}, flush=True)
 
     with open(out / "decoding_comparison.csv", "w", newline="") as f:
