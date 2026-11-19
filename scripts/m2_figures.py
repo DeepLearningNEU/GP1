@@ -18,7 +18,7 @@ OUT = ROOT / "results" / "m2_caption"
 INK, INK2, GRID, SURF = "#0b0b0b", "#52514e", "#ecebe7", "#ffffff"
 COLORS = {"prefix": "#2a78d6", "cross": "#eb6834"}
 LABEL = {"prefix": "Prefix conditioning", "cross": "Cross-attention"}
-plt.rcParams.update({"font.family": ["Arial", "DejaVu Sans"], "font.size": 10, "axes.edgecolor": "#d6d5d0",
+plt.rcParams.update({"font.family": ["DejaVu Sans"], "font.size": 10, "axes.edgecolor": "#d6d5d0",
                      "axes.labelcolor": INK2, "xtick.color": INK2, "ytick.color": INK2})
 
 
@@ -38,7 +38,7 @@ def loss_curves():
                 label=f"{LABEL[inj]} — train")
         pts = [(int(r["step"]), float(r["val_loss"])) for r in ep if int(r["epoch"]) > 0]
         ax.plot(*zip(*pts), color=c, lw=0, marker="o", ms=7, mec=SURF, mew=1.5, label=f"{LABEL[inj]} — val (per epoch)")
-    ax.set(xlabel="Training step (batch 32)", ylabel="Cross-entropy loss (per token)", ylim=(1.8, 4.5))
+    ax.set(xlabel="Training step (batch 32)", ylabel="Cross-entropy loss (per token)", ylim=(1.0, 4.6))
     ax.grid(color=GRID, lw=0.8); ax.set_axisbelow(True)
     for s in ["top", "right"]:
         ax.spines[s].set_visible(False)
