@@ -1,0 +1,21 @@
+<ol>
+  <li><b>Both injection methods train quickly, then overfit.</b> One epoch takes validation loss from 6.04 (prefix) and 4.61 (cross-attention) down to about 2.3. Validation loss is lowest at epoch 3 for prefix conditioning (2.233, perplexity 9.3) and at epoch 2 for cross-attention (2.225, perplexity 9.3), and rises after that.
+      Cross-attention overfits much more: at epoch 5 its train loss is 1.22 but its validation loss is 2.45, while prefix conditioning ends at 1.70 / 2.27.
+      Our explanation is that cross-attention reads all 257 patch tokens of every image, so with only 5,000 training images it can memorize them. The prefix model sees a single 768-d vector per image.
+      All decoding results below use the epoch-5 checkpoints, so they are slightly worse than the best epoch. Keeping the best-validation checkpoint (early stopping) is the first change for the next milestone.</li>
+  <li><b>How the captions change during training.</b> Before training, GPT-2 ignores the image and writes generic news text, nearly the same sentence for every image (e.g. "The U.S. Department of Justice has filed a lawsuit&hellip;").
+      After 100 steps it has learned the short COCO caption style but collapses onto a few generic captions: with cross-attention, 5 of the 8 sample images get "A man is standing next to a woman."; with prefix conditioning, 4 of 8 get "A man is standing on a bench with a baseball bat."
+      By step 300 the main object is usually right (bus, bed, cat, cell phone), and by the end the captions contain specific details (a tray of donuts, a bus parked next to a car).</li>
+  <li><b>Cross-attention beats prefix conditioning on every reference-based metric.</b> With beam-3, CIDEr is 1.085 vs 1.009 and BLEU-4 is 0.313 vs 0.292. With greedy decoding, CIDEr is 1.026 vs 0.924.
+      Access to spatial patch features helps the decoder name objects and their relations. The cost is about 50% longer training (34 vs 23 min for 5 epochs on a P100) and about 2&times; slower decoding.
+      The two methods add a similar number of new parameters (29.2M vs 32.5M), so the gain comes from the richer image representation, not from model size. CLIPScore is the same for both (about 0.61).</li>
+  <li><b>Decoding strategy trades accuracy for diversity.</b>
+    <ul>
+      <li><i>Beam search</i> gives the most accurate captions. Beam-3 has the best CIDEr for both models. Beam-5 does not improve CIDEr over beam-3, makes captions more uniform (prefix: 90% unique captions vs 95% for greedy; lower distinct-2), and is about 4&times; slower than greedy.</li>
+      <li><i>Nucleus sampling</i> with p = 0.9 is the most diverse: nearly every caption is unique (99.6&ndash;100%) and distinct-2 is 0.52 vs 0.28 for beam-5 (prefix model). It is also the least accurate (CIDEr 0.64 prefix / 0.75 cross), and it sometimes adds details that are not in the image, e.g. "The stop sign has been vandalized."</li>
+      <li><i>Nucleus p = 0.5</i> sits between the two.</li>
+    </ul>
+    CLIPScore barely changes across strategies (0.588&ndash;0.609). Sampling mostly changes the wording and the extra details, not whether the caption matches the image.</li>
+  <li><b>Typical errors.</b> Similar-looking objects are confused: a person at a keyboard with a microphone is captioned as "playing a guitar" by both models. Some attributes are invented. Greedy decoding sometimes repeats a phrase ("a red headboard and a red velvet headboard"); 4&ndash;10% of captions repeat a bigram.
+      Human references are often more abstract ("Eating a donut makes for a quick and easy breakfast."), which BLEU and CIDEr penalize even when the generated caption is correct.</li>
+</ol>

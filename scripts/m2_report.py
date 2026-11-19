@@ -21,11 +21,9 @@ def img_tag(path, width):
 
 
 def thumb(name, size=150):
-    from PIL import Image
-    import io
-    im = Image.open(SAMPLE_IMG / Path(name).name).convert("RGB").resize((size * 2, size * 2))
-    buf = io.BytesIO(); im.save(buf, "JPEG", quality=85)
-    return f'<img src="data:image/jpeg;base64,{base64.b64encode(buf.getvalue()).decode()}" style="width:{size}px">'
+    """Embed the 300x300 copy exported by m2_figures.py (no image library needed)."""
+    b64 = base64.b64encode((SAMPLE_IMG / Path(name).name).read_bytes()).decode()
+    return f'<img src="data:image/jpeg;base64,{b64}" style="width:{size}px">'
 
 
 def read_csv(p):
@@ -127,7 +125,7 @@ def main():
 <ul>
   <li><b>Encoder:</b> CLIP ViT-L/14 vision Transformer, frozen. Features are pre-computed once: the projected [CLS] embedding (768-d) and the last-layer patch tokens (257 × 1024).</li>
   <li><b>Decoder:</b> GPT-2 small (124M), fine-tuned. Captions are fed as <code>&lt;|endoftext|&gt; caption &lt;|endoftext|&gt;</code>; the first token acts as BOS, the last as EOS, and the loss is computed on caption tokens and EOS only.</li>
-  <li><b>Embedding injection — prefix conditioning (main model):</b> a 2-layer MLP maps the CLIP embedding to {c['prefix_len']} prefix vectors (10 × 768) that are prepended to the caption token embeddings (ClipCap-style). GPT-2's architecture is unchanged; {c['params_new_M']}M new parameters.</li>
+  <li><b>Embedding injection — prefix conditioning:</b> a 2-layer MLP maps the CLIP embedding to {c['prefix_len']} prefix vectors (10 × 768) that are prepended to the caption token embeddings (ClipCap-style). GPT-2's architecture is unchanged; {c['params_new_M']}M new parameters.</li>
   <li><b>Embedding injection — cross-attention:</b> CLIP patch tokens are projected to 768-d (Linear + LayerNorm) and every GPT-2 block gets a new cross-attention layer over them ({cross_cfg.get('params_new_M', '—')}M new parameters).</li>
   <li><b>Data:</b> the 5,000 COCO train2017 images from Milestone 1, now with all of their captions ({c['train_pairs']:,} image–caption pairs); {c['val_images']} COCO val2017 images ({c['val_pairs']:,} captions) for validation loss, samples and the decoding study.</li>
   <li><b>Training:</b> AdamW, batch {c['bs']}, learning rate {c['lr_new']} for new layers and {c['lr_gpt']} for GPT-2, {c['warmup']} warm-up steps then linear decay, gradient clipping 1.0. Prefix model: {c['epochs']} epochs; cross-attention model: {cross_cfg.get('epochs', '—')} epochs. Trained on the NEU Explorer HPC cluster ({c.get('gpu', c['device'])}).</li>
@@ -137,10 +135,10 @@ def main():
 <h2>2. Training log</h2>
 {table(ep_rows, ["Model", "Epoch", "Step", "Train loss", "Val loss", "Val perplexity", "Time (min)"])}
 <p>Epoch 0 is the untrained model (randomly initialized mapping / cross-attention). Loss is per-token cross-entropy on the validation captions. Step-level logs are in <code>results/m2_caption/&lt;model&gt;/train_log.csv</code>; the full console log is <code>results/m2_caption/train_console.log</code>.</p>
-<div class="fig">{img_tag(RES / "loss_curves.png", "84%")}</div>
+<div class="fig">{img_tag(RES / "loss_curves.png", "72%")}</div>
 <div class="cap">Figure 1. Training loss (every 50 steps) and validation loss (end of each epoch).</div>
 
-<h2 class="pb">3. Early caption samples</h2>
+<h2>3. Early caption samples</h2>
 <p>Eight fixed validation images (not seen in training). Captions are recorded before training, early in training (steps 100 and 300), and at the end; the last three lines compare decoding strategies and the cross-attention model.</p>
 <table class="samples">{sample_rows}</table>
 

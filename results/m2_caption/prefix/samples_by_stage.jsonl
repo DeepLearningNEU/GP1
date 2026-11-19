@@ -1,0 +1,64 @@
+{"stage": "untrained", "file_name": "images/000000365098.jpg", "generated": "The U.S. has a long-standing history of being a \"felon\" in the United States, and the U.S.", "reference": "An empty boat in the water near a tree"}
+{"stage": "untrained", "file_name": "images/000000398905.jpg", "generated": "The U.S. has a long-standing history of being a \"felon-in-the-making\" place, and the U", "reference": "A person is sitting at a keyboard near a microphone."}
+{"stage": "untrained", "file_name": "images/000000035682.jpg", "generated": "The U.S. has a long-standing history of being a \"felon\" in the United States, and the U.S.", "reference": "Eating a donut makes for a quick and easy breakfast."}
+{"stage": "untrained", "file_name": "images/000000243867.jpg", "generated": "The U.S. has a long-standing history of the use of the \"f-bombs\" in the United States, and the U", "reference": "a bus and a car on a city street"}
+{"stage": "untrained", "file_name": "images/000000483050.jpg", "generated": "The U.S. has a long-standing history of the use of the \"H-1-B\" program, and the U.S", "reference": "A large bed with two lamps on either side lighting the room."}
+{"stage": "untrained", "file_name": "images/000000460841.jpg", "generated": "The U.S. has a long-standing history of the use of the \"f-bombs\" in the United States, and the U", "reference": "a kitten that is sitting down by a door"}
+{"stage": "untrained", "file_name": "images/000000383337.jpg", "generated": "The U.S. is a \"t-shirt-in-the-face-of-the-world\" game, and the game is", "reference": "A hand reaching into a box of donuts on a counter."}
+{"stage": "untrained", "file_name": "images/000000288391.jpg", "generated": "The U.S. has a long-standing history of being a \"felon\" in the United States, and the U.S.", "reference": "The cell phone is gold and hooked up to a wall."}
+{"stage": "step 100", "file_name": "images/000000365098.jpg", "generated": "A man is standing on a bench with a baseball bat.", "reference": "An empty boat in the water near a tree"}
+{"stage": "step 100", "file_name": "images/000000398905.jpg", "generated": "A man is standing on a bench with a baseball bat.", "reference": "A person is sitting at a keyboard near a microphone."}
+{"stage": "step 100", "file_name": "images/000000035682.jpg", "generated": "A man with a baseball bat and a baseball bat is standing on a bench.", "reference": "Eating a donut makes for a quick and easy breakfast."}
+{"stage": "step 100", "file_name": "images/000000243867.jpg", "generated": "A man is standing on a bench with a baseball bat.", "reference": "a bus and a car on a city street"}
+{"stage": "step 100", "file_name": "images/000000483050.jpg", "generated": "A man in a white shirt and shorts holding a baseball bat.", "reference": "A large bed with two lamps on either side lighting the room."}
+{"stage": "step 100", "file_name": "images/000000460841.jpg", "generated": "A man is standing on a bench with a large bag of food.", "reference": "a kitten that is sitting down by a door"}
+{"stage": "step 100", "file_name": "images/000000383337.jpg", "generated": "A large plate of rice with a large bowl of rice.", "reference": "A hand reaching into a box of donuts on a counter."}
+{"stage": "step 100", "file_name": "images/000000288391.jpg", "generated": "A man is standing on a bench with a baseball bat.", "reference": "The cell phone is gold and hooked up to a wall."}
+{"stage": "step 300", "file_name": "images/000000365098.jpg", "generated": "A man is standing on a surfboard in the ocean.", "reference": "An empty boat in the water near a tree"}
+{"stage": "step 300", "file_name": "images/000000398905.jpg", "generated": "A man holding a laptop in his hand.", "reference": "A person is sitting at a keyboard near a microphone."}
+{"stage": "step 300", "file_name": "images/000000035682.jpg", "generated": "A man and woman eating a sandwich.", "reference": "Eating a donut makes for a quick and easy breakfast."}
+{"stage": "step 300", "file_name": "images/000000243867.jpg", "generated": "A bus parked in front of a building.", "reference": "a bus and a car on a city street"}
+{"stage": "step 300", "file_name": "images/000000483050.jpg", "generated": "A bed with a bed and a couch.", "reference": "A large bed with two lamps on either side lighting the room."}
+{"stage": "step 300", "file_name": "images/000000460841.jpg", "generated": "A cat is sitting on a toilet in a bathroom.", "reference": "a kitten that is sitting down by a door"}
+{"stage": "step 300", "file_name": "images/000000383337.jpg", "generated": "A woman holding a sandwich and a cup of coffee.", "reference": "A hand reaching into a box of donuts on a counter."}
+{"stage": "step 300", "file_name": "images/000000288391.jpg", "generated": "A person holding a cell phone in front of a brick wall.", "reference": "The cell phone is gold and hooked up to a wall."}
+{"stage": "epoch 1", "file_name": "images/000000365098.jpg", "generated": "A boat with a man riding on top of it.", "reference": "An empty boat in the water near a tree"}
+{"stage": "epoch 1", "file_name": "images/000000398905.jpg", "generated": "A man in a suit and tie is talking on a cell phone.", "reference": "A person is sitting at a keyboard near a microphone."}
+{"stage": "epoch 1", "file_name": "images/000000035682.jpg", "generated": "A man and woman sitting at a table with a drink.", "reference": "Eating a donut makes for a quick and easy breakfast."}
+{"stage": "epoch 1", "file_name": "images/000000243867.jpg", "generated": "A bus parked on a street corner near a building.", "reference": "a bus and a car on a city street"}
+{"stage": "epoch 1", "file_name": "images/000000483050.jpg", "generated": "A bed with a white pillow and a white dresser.", "reference": "A large bed with two lamps on either side lighting the room."}
+{"stage": "epoch 1", "file_name": "images/000000460841.jpg", "generated": "A cat sitting on a toilet seat in a sink.", "reference": "a kitten that is sitting down by a door"}
+{"stage": "epoch 1", "file_name": "images/000000383337.jpg", "generated": "A man holding a box of doughnuts and a cup of coffee.", "reference": "A hand reaching into a box of donuts on a counter."}
+{"stage": "epoch 1", "file_name": "images/000000288391.jpg", "generated": "A cell phone sitting on top of a wall.", "reference": "The cell phone is gold and hooked up to a wall."}
+{"stage": "epoch 2", "file_name": "images/000000365098.jpg", "generated": "A man in a black hat is carrying a boat.", "reference": "An empty boat in the water near a tree"}
+{"stage": "epoch 2", "file_name": "images/000000398905.jpg", "generated": "A man in a suit and tie is playing a guitar.", "reference": "A person is sitting at a keyboard near a microphone."}
+{"stage": "epoch 2", "file_name": "images/000000035682.jpg", "generated": "A man and a woman sitting at a table with a donut.", "reference": "Eating a donut makes for a quick and easy breakfast."}
+{"stage": "epoch 2", "file_name": "images/000000243867.jpg", "generated": "A bus parked on the side of a street.", "reference": "a bus and a car on a city street"}
+{"stage": "epoch 2", "file_name": "images/000000483050.jpg", "generated": "A bed with a white pillow and a white dresser.", "reference": "A large bed with two lamps on either side lighting the room."}
+{"stage": "epoch 2", "file_name": "images/000000460841.jpg", "generated": "A cat is drinking water from a bottle.", "reference": "a kitten that is sitting down by a door"}
+{"stage": "epoch 2", "file_name": "images/000000383337.jpg", "generated": "A person holding a box of donuts with a fork.", "reference": "A hand reaching into a box of donuts on a counter."}
+{"stage": "epoch 2", "file_name": "images/000000288391.jpg", "generated": "A cell phone is on a pole in front of a building.", "reference": "The cell phone is gold and hooked up to a wall."}
+{"stage": "epoch 3", "file_name": "images/000000365098.jpg", "generated": "A boat with a large handle is sitting in the water.", "reference": "An empty boat in the water near a tree"}
+{"stage": "epoch 3", "file_name": "images/000000398905.jpg", "generated": "A man in a suit and tie is playing a guitar.", "reference": "A person is sitting at a keyboard near a microphone."}
+{"stage": "epoch 3", "file_name": "images/000000035682.jpg", "generated": "A man sitting at a table with a box of donuts.", "reference": "Eating a donut makes for a quick and easy breakfast."}
+{"stage": "epoch 3", "file_name": "images/000000243867.jpg", "generated": "A bus is parked on the street next to a building.", "reference": "a bus and a car on a city street"}
+{"stage": "epoch 3", "file_name": "images/000000483050.jpg", "generated": "A bedroom with a bed, table, and a dresser.", "reference": "A large bed with two lamps on either side lighting the room."}
+{"stage": "epoch 3", "file_name": "images/000000460841.jpg", "generated": "A black cat is looking at a bottle of water.", "reference": "a kitten that is sitting down by a door"}
+{"stage": "epoch 3", "file_name": "images/000000383337.jpg", "generated": "A person is handing out doughnuts in a box.", "reference": "A hand reaching into a box of donuts on a counter."}
+{"stage": "epoch 3", "file_name": "images/000000288391.jpg", "generated": "A cell phone sitting on the side of a building.", "reference": "The cell phone is gold and hooked up to a wall."}
+{"stage": "epoch 4", "file_name": "images/000000365098.jpg", "generated": "A boat with a large paddle in it.", "reference": "An empty boat in the water near a tree"}
+{"stage": "epoch 4", "file_name": "images/000000398905.jpg", "generated": "A man in a suit and tie is playing a guitar.", "reference": "A person is sitting at a keyboard near a microphone."}
+{"stage": "epoch 4", "file_name": "images/000000035682.jpg", "generated": "A man sitting at a table with a donut and a drink.", "reference": "Eating a donut makes for a quick and easy breakfast."}
+{"stage": "epoch 4", "file_name": "images/000000243867.jpg", "generated": "A large bus parked in front of a building.", "reference": "a bus and a car on a city street"}
+{"stage": "epoch 4", "file_name": "images/000000483050.jpg", "generated": "A bedroom with a bed, dresser, and a lamp.", "reference": "A large bed with two lamps on either side lighting the room."}
+{"stage": "epoch 4", "file_name": "images/000000460841.jpg", "generated": "A cat is drinking from a bottle in a bathroom.", "reference": "a kitten that is sitting down by a door"}
+{"stage": "epoch 4", "file_name": "images/000000383337.jpg", "generated": "A person is handing out doughnuts in a box.", "reference": "A hand reaching into a box of donuts on a counter."}
+{"stage": "epoch 4", "file_name": "images/000000288391.jpg", "generated": "A cell phone sitting on top of a wall.", "reference": "The cell phone is gold and hooked up to a wall."}
+{"stage": "epoch 5", "file_name": "images/000000365098.jpg", "generated": "A boat with a large paddle in it.", "reference": "An empty boat in the water near a tree"}
+{"stage": "epoch 5", "file_name": "images/000000398905.jpg", "generated": "A man in a suit and tie is playing a guitar.", "reference": "A person is sitting at a keyboard near a microphone."}
+{"stage": "epoch 5", "file_name": "images/000000035682.jpg", "generated": "A man sitting at a table with a tray of donuts.", "reference": "Eating a donut makes for a quick and easy breakfast."}
+{"stage": "epoch 5", "file_name": "images/000000243867.jpg", "generated": "A large bus parked on the side of a street.", "reference": "a bus and a car on a city street"}
+{"stage": "epoch 5", "file_name": "images/000000483050.jpg", "generated": "A bedroom with a bed, table and window.", "reference": "A large bed with two lamps on either side lighting the room."}
+{"stage": "epoch 5", "file_name": "images/000000460841.jpg", "generated": "A black cat is looking at a bottle of water.", "reference": "a kitten that is sitting down by a door"}
+{"stage": "epoch 5", "file_name": "images/000000383337.jpg", "generated": "A person is handing out doughnuts in a box.", "reference": "A hand reaching into a box of donuts on a counter."}
+{"stage": "epoch 5", "file_name": "images/000000288391.jpg", "generated": "A cell phone sitting on top of a wall.", "reference": "The cell phone is gold and hooked up to a wall."}
