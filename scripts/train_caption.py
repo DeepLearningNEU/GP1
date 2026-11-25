@@ -119,13 +119,24 @@ def main():
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--max_steps", type=int, default=0, help="stop early (debug)")
     p.add_argument("--workers", type=int, default=4 if torch.cuda.is_available() else 0)
+    p.add_argument("--finetune", choices=["full", "lora", "frozen"], default="full", help="how the GPT-2 weights are trained")
+    p.add_argument("--lora_r", type=int, default=8)
+    p.add_argument("--lr_lora", type=float, default=2e-4)
+    p.add_argument("--results", default="m2_caption", help="results/<results>/<tag>/")
+    p.add_argument("--tag", default=None, help="output sub-folder / checkpoint name (default: injection)")
+    p.add_argument("--ckpt_dir", type=Path, default=ROOT / "checkpoints")
+    p.add_argument("--test_images", type=int, default=0,
+                   help="hold out the first N val images as a test set: excluded from val loss / checkpoint selection")
+    p.add_argument("--save_best", action="store_true", help="keep the checkpoint with the lowest val loss")
     a = p.parse_args()
 
     torch.manual_seed(a.seed); random.seed(a.seed)
     dev = device()
-    out = ROOT / "results" / "m2_caption" / a.injection
+    tag = a.tag or a.injection
+    out = ROOT / "results" / a.results / tag
     out.mkdir(parents=True, exist_ok=True)
-    (ROOT / "checkpoints").mkdir(exist_ok=True)
+    a.ckpt_dir.mkdir(parents=True, exist_ok=True)
+    ckpt = a.ckpt_dir / (f"m2_{a.injection}.pt" if a.results == "m2_caption" and tag == a.injection else f"{a.results}_{tag}.pt")
     for f in ["train_log.csv", "epoch_log.csv", "samples_by_stage.jsonl"]:
         (out / f).unlink(missing_ok=True)
 
@@ -134,21 +145,28 @@ def main():
     collate = make_collate(tok)
     tl = DataLoader(tr, batch_size=a.bs, shuffle=True, collate_fn=collate, num_workers=a.workers)
     vl = DataLoader(va, batch_size=64, shuffle=False, collate_fn=collate, num_workers=a.workers)
-    sample_idx = random.Random(0).sample(range(len(va.rows)), a.n_samples)
+    if a.test_images:   # test images are never used for val loss / model selection
+        va.items = [(i, c) for i, c in va.items if i >= a.test_images]
+        vl = DataLoader(va, batch_size=64, shuffle=False, collate_fn=collate, num_workers=a.workers)
+    pool = range(a.test_images) if a.test_images else range(len(va.rows))
+    sample_idx = random.Random(0).sample(pool, a.n_samples)
 
-    model = ClipCaptioner(a.injection, prefix_len=a.prefix_len).to(dev)
-    new = [p_ for n, p_ in model.named_parameters() if n.startswith("mapper") or "crossattention" in n or "ln_cross_attn" in n]
-    new_ids = {id(x) for x in new}
-    old = [p_ for p_ in model.parameters() if id(p_) not in new_ids]
-    opt = torch.optim.AdamW([{"params": new, "lr": a.lr_new}, {"params": old, "lr": a.lr_gpt}], weight_decay=0.01)
+    model = ClipCaptioner(a.injection, prefix_len=a.prefix_len, finetune=a.finetune, lora_r=a.lora_r).to(dev)
+    named = [(n, p_) for n, p_ in model.named_parameters() if p_.requires_grad]
+    new = [p_ for n, p_ in named if n.startswith("mapper") or "crossattention" in n or "ln_cross_attn" in n]
+    lora = [p_ for n, p_ in named if "lora_" in n]
+    old = [p_ for n, p_ in named if not (n.startswith("mapper") or "crossattention" in n or "ln_cross_attn" in n or "lora_" in n)]
+    groups = [{"params": new, "lr": a.lr_new}, {"params": old, "lr": a.lr_gpt}, {"params": lora, "lr": a.lr_lora}]
+    opt = torch.optim.AdamW([g for g in groups if g["params"]], weight_decay=0.01)
     total = a.epochs * len(tl) if not a.max_steps else a.max_steps
     sched = get_linear_schedule_with_warmup(opt, a.warmup, total)
 
     n_new, n_all = sum(x.numel() for x in new), sum(x.numel() for x in model.parameters())
-    cfg = vars(a) | {"data": str(a.data), "device": dev,
+    n_train = sum(p_.numel() for _, p_ in named)
+    cfg = vars(a) | {"data": str(a.data), "ckpt_dir": str(a.ckpt_dir), "tag": tag, "checkpoint": str(ckpt), "device": dev,
                      "gpu": torch.cuda.get_device_name(0) if dev == "cuda" else dev, "train_pairs": len(tr), "train_images": len(tr.rows),
                      "val_pairs": len(va), "val_images": len(va.rows), "steps": total,
-                     "params_total_M": round(n_all / 1e6, 1), "params_new_M": round(n_new / 1e6, 1),
+                     "params_total_M": round(n_all / 1e6, 1), "params_new_M": round(n_new / 1e6, 1), "params_trainable_M": round(n_train / 1e6, 2),
                      "clip": "openai/clip-vit-large-patch14 (frozen)", "decoder": GPT2_NAME}
     json.dump(cfg, open(out / "config.json", "w"), indent=2)
     print(json.dumps(cfg, indent=1))
@@ -161,9 +179,10 @@ def main():
     with open(out / "epoch_log.csv", "w", newline="") as f:
         csv.writer(f).writerows([["epoch", "step", "train_loss", "val_loss", "val_ppl", "minutes"], [0, 0, "", round(v0, 4), round(math.exp(v0), 2), 0]])
     tw = csv.writer(open(out / "train_log.csv", "w", newline=""))
-    tw.writerow(["step", "epoch", "train_loss", "lr_new", "lr_gpt", "seconds"])
+    tw.writerow(["step", "epoch", "train_loss", "lr_new", "lr_other", "seconds"])   # lr_other: GPT-2 (full) or LoRA
 
     t0, step, run_loss, run_n = time.time(), 0, 0.0, 0
+    best, best_ep = float("inf"), 0
     model.train()
     for ep in range(1, a.epochs + 1):
         ep_loss, ep_n = 0.0, 0
@@ -176,7 +195,7 @@ def main():
             run_loss += loss.item(); run_n += 1; ep_loss += loss.item(); ep_n += 1
             if step % a.log_every == 0:
                 lrs = sched.get_last_lr()
-                tw.writerow([step, ep, round(run_loss / run_n, 4), f"{lrs[0]:.2e}", f"{lrs[1]:.2e}", round(time.time() - t0, 1)])
+                tw.writerow([step, ep, round(run_loss / run_n, 4), f"{lrs[0]:.2e}", f"{lrs[-1]:.2e}", round(time.time() - t0, 1)])
                 print(f"step {step:5d}/{total} | epoch {ep} | loss {run_loss / run_n:.4f} | {time.time() - t0:6.0f}s", flush=True)
                 run_loss, run_n = 0.0, 0
             if step in a.early_sample_steps:
@@ -192,11 +211,19 @@ def main():
         print(f"[epoch {ep}] train {ep_loss / ep_n:.4f} | val {vloss:.4f} (ppl {math.exp(vloss):.1f}) | {mins:.1f} min")
         for c in caps[:3]:
             print("   ", c)
+        if a.save_best and vloss < best:
+            best, best_ep = vloss, ep
+            torch.save({"state_dict": model.state_dict(), "config": cfg | {"epoch": ep, "val_loss": vloss}}, ckpt)
+            print(f"   new best val loss -> saved {ckpt}")
         if a.max_steps and step >= a.max_steps:
             break
 
-    torch.save({"state_dict": model.state_dict(), "config": cfg}, ROOT / "checkpoints" / f"m2_{a.injection}.pt")
-    print("saved", ROOT / "checkpoints" / f"m2_{a.injection}.pt")
+    if not a.save_best:
+        best_ep = ep
+        torch.save({"state_dict": model.state_dict(), "config": cfg | {"epoch": ep}}, ckpt)
+    json.dump(cfg | {"best_epoch": best_ep, "best_val_loss": round(best, 4) if a.save_best else None,
+                     "train_minutes": round((time.time() - t0) / 60, 1)}, open(out / "config.json", "w"), indent=2)
+    print(f"checkpoint {ckpt} (epoch {best_ep})")
 
 
 if __name__ == "__main__":

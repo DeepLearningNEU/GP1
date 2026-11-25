@@ -13,6 +13,12 @@ Two ways to inject the image into GPT-2:
           initialised) cross-attention layer that attends from caption tokens to the patches.
 
 CLIP is frozen in both cases; its features are pre-computed (scripts/extract_clip_features.py).
+
+Fine-tuning strategy for the pre-trained GPT-2 weights (`finetune`):
+  full    all GPT-2 weights are trained (Milestone 2)
+  lora    GPT-2 frozen; LoRA adapters (rank r) on the self-attention projections c_attn / c_proj
+  frozen  GPT-2 frozen; only the new image layers train (mapper, and cross-attention in cross mode).
+          With prefix injection this is prefix tuning: the image-conditioned prefix is the only thing learned.
 Sequence layout fed to GPT-2:  [prefix (prefix mode only)] <|endoftext|> caption tokens <|endoftext|>
 The first <|endoftext|> acts as BOS, the last one as EOS; loss is computed on caption tokens + EOS.
 """
@@ -25,7 +31,7 @@ GPT2_NAME = "openai-community/gpt2"
 
 class ClipCaptioner(nn.Module):
     def __init__(self, injection="prefix", prefix_len=10, clip_dim=768, patch_dim=1024,
-                 gpt2_name=GPT2_NAME, freeze_gpt2=False):
+                 gpt2_name=GPT2_NAME, freeze_gpt2=False, finetune="full", lora_r=8):
         super().__init__()
         assert injection in ("prefix", "cross")
         self.injection, self.prefix_len = injection, prefix_len
@@ -40,9 +46,19 @@ class ClipCaptioner(nn.Module):
             d = self.gpt.config.n_embd
             self.mapper = nn.Sequential(nn.Linear(patch_dim, d), nn.LayerNorm(d))
         self.bos = self.eos = self.gpt.config.eos_token_id
-        if freeze_gpt2:  # keep only the new parameters trainable
+        assert finetune in ("full", "lora", "frozen")
+        self.finetune = "frozen" if freeze_gpt2 else finetune
+        if self.finetune != "full":  # freeze pre-trained GPT-2; new cross-attention layers stay trainable
             for n, p in self.gpt.named_parameters():
                 p.requires_grad = "crossattention" in n or "ln_cross_attn" in n
+        if self.finetune == "lora":
+            from peft import LoraConfig, inject_adapter_in_model
+            cfg = LoraConfig(r=lora_r, lora_alpha=2 * lora_r, lora_dropout=0.05, fan_in_fan_out=True,
+                             target_modules=r".*\.h\.\d+\.attn\.(c_attn|c_proj)")  # self-attention only
+            self.gpt = inject_adapter_in_model(cfg, self.gpt)  # adds trainable lora_A / lora_B
+            for n, p in self.gpt.named_parameters():   # injection freezes non-adapter weights; re-open new layers
+                if "crossattention" in n or "ln_cross_attn" in n:
+                    p.requires_grad = True
 
     # ------------------------------------------------------------------ conditioning
     def condition(self, clip_emb=None, patches=None):
