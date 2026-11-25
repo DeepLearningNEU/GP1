@@ -1,0 +1,981 @@
+name, memory.total [MiB]
+Tesla P100-PCIE-12GB, 12288 MiB
+/home/hu.zhim/GP1/scripts/train_caption.py:35: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  self.cls = torch.nn.functional.normalize(torch.load(split_dir / "clip_cls.pt")["emb"], dim=-1)
+Some weights of GPT2LMHeadModel were not initialized from the model checkpoint at openai-community/gpt2 and are newly initialized: ['h.0.crossattention.c_attn.bias', 'h.0.crossattention.c_attn.weight', 'h.0.crossattention.c_proj.bias', 'h.0.crossattention.c_proj.weight', 'h.0.crossattention.q_attn.bias', 'h.0.crossattention.q_attn.weight', 'h.0.ln_cross_attn.bias', 'h.0.ln_cross_attn.weight', 'h.1.crossattention.c_attn.bias', 'h.1.crossattention.c_attn.weight', 'h.1.crossattention.c_proj.bias', 'h.1.crossattention.c_proj.weight', 'h.1.crossattention.q_attn.bias', 'h.1.crossattention.q_attn.weight', 'h.1.ln_cross_attn.bias', 'h.1.ln_cross_attn.weight', 'h.10.crossattention.c_attn.bias', 'h.10.crossattention.c_attn.weight', 'h.10.crossattention.c_proj.bias', 'h.10.crossattention.c_proj.weight', 'h.10.crossattention.q_attn.bias', 'h.10.crossattention.q_attn.weight', 'h.10.ln_cross_attn.bias', 'h.10.ln_cross_attn.weight', 'h.11.crossattention.c_attn.bias', 'h.11.crossattention.c_attn.weight', 'h.11.crossattention.c_proj.bias', 'h.11.crossattention.c_proj.weight', 'h.11.crossattention.q_attn.bias', 'h.11.crossattention.q_attn.weight', 'h.11.ln_cross_attn.bias', 'h.11.ln_cross_attn.weight', 'h.2.crossattention.c_attn.bias', 'h.2.crossattention.c_attn.weight', 'h.2.crossattention.c_proj.bias', 'h.2.crossattention.c_proj.weight', 'h.2.crossattention.q_attn.bias', 'h.2.crossattention.q_attn.weight', 'h.2.ln_cross_attn.bias', 'h.2.ln_cross_attn.weight', 'h.3.crossattention.c_attn.bias', 'h.3.crossattention.c_attn.weight', 'h.3.crossattention.c_proj.bias', 'h.3.crossattention.c_proj.weight', 'h.3.crossattention.q_attn.bias', 'h.3.crossattention.q_attn.weight', 'h.3.ln_cross_attn.bias', 'h.3.ln_cross_attn.weight', 'h.4.crossattention.c_attn.bias', 'h.4.crossattention.c_attn.weight', 'h.4.crossattention.c_proj.bias', 'h.4.crossattention.c_proj.weight', 'h.4.crossattention.q_attn.bias', 'h.4.crossattention.q_attn.weight', 'h.4.ln_cross_attn.bias', 'h.4.ln_cross_attn.weight', 'h.5.crossattention.c_attn.bias', 'h.5.crossattention.c_attn.weight', 'h.5.crossattention.c_proj.bias', 'h.5.crossattention.c_proj.weight', 'h.5.crossattention.q_attn.bias', 'h.5.crossattention.q_attn.weight', 'h.5.ln_cross_attn.bias', 'h.5.ln_cross_attn.weight', 'h.6.crossattention.c_attn.bias', 'h.6.crossattention.c_attn.weight', 'h.6.crossattention.c_proj.bias', 'h.6.crossattention.c_proj.weight', 'h.6.crossattention.q_attn.bias', 'h.6.crossattention.q_attn.weight', 'h.6.ln_cross_attn.bias', 'h.6.ln_cross_attn.weight', 'h.7.crossattention.c_attn.bias', 'h.7.crossattention.c_attn.weight', 'h.7.crossattention.c_proj.bias', 'h.7.crossattention.c_proj.weight', 'h.7.crossattention.q_attn.bias', 'h.7.crossattention.q_attn.weight', 'h.7.ln_cross_attn.bias', 'h.7.ln_cross_attn.weight', 'h.8.crossattention.c_attn.bias', 'h.8.crossattention.c_attn.weight', 'h.8.crossattention.c_proj.bias', 'h.8.crossattention.c_proj.weight', 'h.8.crossattention.q_attn.bias', 'h.8.crossattention.q_attn.weight', 'h.8.ln_cross_attn.bias', 'h.8.ln_cross_attn.weight', 'h.9.crossattention.c_attn.bias', 'h.9.crossattention.c_attn.weight', 'h.9.crossattention.c_proj.bias', 'h.9.crossattention.c_proj.weight', 'h.9.crossattention.q_attn.bias', 'h.9.crossattention.q_attn.weight', 'h.9.ln_cross_attn.bias', 'h.9.ln_cross_attn.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+{
+ "data": "/scratch/hu.zhim/gp1/data",
+ "injection": "cross",
+ "prefix_len": 10,
+ "epochs": 5,
+ "bs": 32,
+ "lr_new": 0.0002,
+ "lr_gpt": 5e-05,
+ "warmup": 300,
+ "log_every": 50,
+ "early_sample_steps": [
+  100,
+  300
+ ],
+ "n_samples": 8,
+ "seed": 42,
+ "max_steps": 0,
+ "workers": 4,
+ "finetune": "full",
+ "lora_r": 8,
+ "lr_lora": 0.0002,
+ "results": "m3",
+ "tag": "cross_full",
+ "ckpt_dir": "/scratch/hu.zhim/gp1/checkpoints",
+ "test_images": 1000,
+ "save_best": true,
+ "checkpoint": "/scratch/hu.zhim/gp1/checkpoints/m3_cross_full.pt",
+ "device": "cuda",
+ "gpu": "Tesla P100-PCIE-12GB",
+ "train_pairs": 25007,
+ "train_images": 5000,
+ "val_pairs": 20011,
+ "val_images": 5000,
+ "steps": 3910,
+ "params_total_M": 153.6,
+ "params_new_M": 29.2,
+ "params_trainable_M": 153.6,
+ "clip": "openai/clip-vit-large-patch14 (frozen)",
+ "decoder": "openai-community/gpt2"
+}
+[epoch 0] untrained val loss 4.6111 ppl 100.6
+    The U.S. Department of Justice has filed a lawsuit against the company that owns the video game company, Electronic Arts, alleging that the company
+    The U.S. Department of Justice has filed a lawsuit against the company that owns the video game company, Electronic Arts, alleging that the company
+    The U.S. Department of Justice has filed a lawsuit against the company that owns the video game company, Electronic Arts.
+
+The lawsuit
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+step    50/3910 | epoch 1 | loss 4.0705 |     23s
+step   100/3910 | epoch 1 | loss 3.2147 |     43s
+   [samples @ step 100] A man is standing next to a woman. | A man is standing next to a woman.
+step   150/3910 | epoch 1 | loss 3.0204 |     64s
+step   200/3910 | epoch 1 | loss 2.8336 |     84s
+step   250/3910 | epoch 1 | loss 2.6990 |    104s
+step   300/3910 | epoch 1 | loss 2.6519 |    125s
+   [samples @ step 300] A cat is laying on a bed with a white pillow. | A man is eating a sandwich at a restaurant.
+step   350/3910 | epoch 1 | loss 2.5981 |    145s
+step   400/3910 | epoch 1 | loss 2.5488 |    165s
+step   450/3910 | epoch 1 | loss 2.4615 |    186s
+step   500/3910 | epoch 1 | loss 2.4448 |    206s
+step   550/3910 | epoch 1 | loss 2.3880 |    226s
+step   600/3910 | epoch 1 | loss 2.3710 |    247s
+step   650/3910 | epoch 1 | loss 2.3554 |    267s
+step   700/3910 | epoch 1 | loss 2.2897 |    287s
+step   750/3910 | epoch 1 | loss 2.3426 |    308s
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[epoch 1] train 2.6733 | val 2.3044 (ppl 10.0) | 6.7 min
+    A cat is sitting on a window sill.
+    A man standing next to a kitchen counter with a large food item.
+    A red double decker bus is parked in front of a large building.
+   new best val loss -> saved /scratch/hu.zhim/gp1/checkpoints/m3_cross_full.pt
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+step   800/3910 | epoch 2 | loss 2.2793 |    411s
+step   850/3910 | epoch 2 | loss 2.1174 |    432s
+step   900/3910 | epoch 2 | loss 2.1140 |    452s
+step   950/3910 | epoch 2 | loss 2.0881 |    473s
+step  1000/3910 | epoch 2 | loss 2.0586 |    493s
+step  1050/3910 | epoch 2 | loss 2.0537 |    514s
+step  1100/3910 | epoch 2 | loss 2.0377 |    534s
+step  1150/3910 | epoch 2 | loss 2.0528 |    555s
+step  1200/3910 | epoch 2 | loss 2.0581 |    575s
+step  1250/3910 | epoch 2 | loss 2.0621 |    596s
+step  1300/3910 | epoch 2 | loss 2.0631 |    616s
+step  1350/3910 | epoch 2 | loss 2.0479 |    637s
+step  1400/3910 | epoch 2 | loss 1.9959 |    657s
+step  1450/3910 | epoch 2 | loss 2.0218 |    678s
+step  1500/3910 | epoch 2 | loss 2.0572 |    699s
+step  1550/3910 | epoch 2 | loss 2.0392 |    719s
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[epoch 2] train 2.0573 | val 2.2288 (ppl 9.3) | 13.4 min
+    A cat is sitting on a pillow in front of a window.
+    Two chefs preparing food in a kitchen.
+    A red double decker bus parked on a dirt road.
+   new best val loss -> saved /scratch/hu.zhim/gp1/checkpoints/m3_cross_full.pt
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+step  1600/3910 | epoch 3 | loss 1.8008 |    823s
+step  1650/3910 | epoch 3 | loss 1.7528 |    843s
+step  1700/3910 | epoch 3 | loss 1.7065 |    864s
+step  1750/3910 | epoch 3 | loss 1.7578 |    884s
+step  1800/3910 | epoch 3 | loss 1.7483 |    905s
+step  1850/3910 | epoch 3 | loss 1.7449 |    925s
+step  1900/3910 | epoch 3 | loss 1.7290 |    946s
+step  1950/3910 | epoch 3 | loss 1.7432 |    966s
+step  2000/3910 | epoch 3 | loss 1.7402 |    987s
+step  2050/3910 | epoch 3 | loss 1.7463 |   1007s
+step  2100/3910 | epoch 3 | loss 1.7474 |   1027s
+step  2150/3910 | epoch 3 | loss 1.7520 |   1047s
+step  2200/3910 | epoch 3 | loss 1.7414 |   1068s
+step  2250/3910 | epoch 3 | loss 1.7539 |   1089s
+step  2300/3910 | epoch 3 | loss 1.7328 |   1109s
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[epoch 3] train 1.7425 | val 2.2412 (ppl 9.4) | 20.1 min
+    A cat is sitting on a bed next to a window.
+    Two chefs prepare food in a kitchen.
+    A red double decker bus parked in a parking lot.
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+step  2350/3910 | epoch 4 | loss 1.7235 |   1210s
+step  2400/3910 | epoch 4 | loss 1.4194 |   1231s
+step  2450/3910 | epoch 4 | loss 1.4379 |   1252s
+step  2500/3910 | epoch 4 | loss 1.4383 |   1272s
+step  2550/3910 | epoch 4 | loss 1.4568 |   1293s
+step  2600/3910 | epoch 4 | loss 1.4506 |   1314s
+step  2650/3910 | epoch 4 | loss 1.4604 |   1334s
+step  2700/3910 | epoch 4 | loss 1.4620 |   1354s
+step  2750/3910 | epoch 4 | loss 1.4335 |   1374s
+step  2800/3910 | epoch 4 | loss 1.4417 |   1395s
+step  2850/3910 | epoch 4 | loss 1.4595 |   1415s
+step  2900/3910 | epoch 4 | loss 1.4668 |   1435s
+step  2950/3910 | epoch 4 | loss 1.4825 |   1455s
+step  3000/3910 | epoch 4 | loss 1.4576 |   1476s
+step  3050/3910 | epoch 4 | loss 1.4818 |   1496s
+step  3100/3910 | epoch 4 | loss 1.4763 |   1516s
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[epoch 4] train 1.4560 | val 2.3220 (ppl 10.2) | 26.8 min
+    A cat is sitting on a bed next to a window.
+    Two chefs prepare food in a restaurant kitchen.
+    A red double decker bus parked next to a row of parked double decker buses.
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+step  3150/3910 | epoch 5 | loss 1.3661 |   1615s
+step  3200/3910 | epoch 5 | loss 1.2109 |   1636s
+step  3250/3910 | epoch 5 | loss 1.2284 |   1657s
+step  3300/3910 | epoch 5 | loss 1.2121 |   1677s
+step  3350/3910 | epoch 5 | loss 1.2138 |   1698s
+step  3400/3910 | epoch 5 | loss 1.2250 |   1719s
+step  3450/3910 | epoch 5 | loss 1.2154 |   1739s
+step  3500/3910 | epoch 5 | loss 1.2439 |   1760s
+step  3550/3910 | epoch 5 | loss 1.2104 |   1780s
+step  3600/3910 | epoch 5 | loss 1.2000 |   1800s
+step  3650/3910 | epoch 5 | loss 1.2207 |   1820s
+step  3700/3910 | epoch 5 | loss 1.2317 |   1841s
+step  3750/3910 | epoch 5 | loss 1.2209 |   1861s
+step  3800/3910 | epoch 5 | loss 1.2305 |   1881s
+step  3850/3910 | epoch 5 | loss 1.2456 |   1901s
+step  3900/3910 | epoch 5 | loss 1.2297 |   1921s
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[epoch 5] train 1.2228 | val 2.4533 (ppl 11.6) | 33.4 min
+    A cat is sitting on a pillow on a window sill.
+    Two chefs prepare food in a restaurant kitchen.
+    A double decker bus parked next to some trees.
+checkpoint /scratch/hu.zhim/gp1/checkpoints/m3_cross_full.pt (epoch 2)
+/home/hu.zhim/GP1/scripts/train_caption.py:35: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  self.cls = torch.nn.functional.normalize(torch.load(split_dir / "clip_cls.pt")["emb"], dim=-1)
+Some weights of GPT2LMHeadModel were not initialized from the model checkpoint at openai-community/gpt2 and are newly initialized: ['h.0.crossattention.c_attn.bias', 'h.0.crossattention.c_attn.weight', 'h.0.crossattention.c_proj.bias', 'h.0.crossattention.c_proj.weight', 'h.0.crossattention.q_attn.bias', 'h.0.crossattention.q_attn.weight', 'h.0.ln_cross_attn.bias', 'h.0.ln_cross_attn.weight', 'h.1.crossattention.c_attn.bias', 'h.1.crossattention.c_attn.weight', 'h.1.crossattention.c_proj.bias', 'h.1.crossattention.c_proj.weight', 'h.1.crossattention.q_attn.bias', 'h.1.crossattention.q_attn.weight', 'h.1.ln_cross_attn.bias', 'h.1.ln_cross_attn.weight', 'h.10.crossattention.c_attn.bias', 'h.10.crossattention.c_attn.weight', 'h.10.crossattention.c_proj.bias', 'h.10.crossattention.c_proj.weight', 'h.10.crossattention.q_attn.bias', 'h.10.crossattention.q_attn.weight', 'h.10.ln_cross_attn.bias', 'h.10.ln_cross_attn.weight', 'h.11.crossattention.c_attn.bias', 'h.11.crossattention.c_attn.weight', 'h.11.crossattention.c_proj.bias', 'h.11.crossattention.c_proj.weight', 'h.11.crossattention.q_attn.bias', 'h.11.crossattention.q_attn.weight', 'h.11.ln_cross_attn.bias', 'h.11.ln_cross_attn.weight', 'h.2.crossattention.c_attn.bias', 'h.2.crossattention.c_attn.weight', 'h.2.crossattention.c_proj.bias', 'h.2.crossattention.c_proj.weight', 'h.2.crossattention.q_attn.bias', 'h.2.crossattention.q_attn.weight', 'h.2.ln_cross_attn.bias', 'h.2.ln_cross_attn.weight', 'h.3.crossattention.c_attn.bias', 'h.3.crossattention.c_attn.weight', 'h.3.crossattention.c_proj.bias', 'h.3.crossattention.c_proj.weight', 'h.3.crossattention.q_attn.bias', 'h.3.crossattention.q_attn.weight', 'h.3.ln_cross_attn.bias', 'h.3.ln_cross_attn.weight', 'h.4.crossattention.c_attn.bias', 'h.4.crossattention.c_attn.weight', 'h.4.crossattention.c_proj.bias', 'h.4.crossattention.c_proj.weight', 'h.4.crossattention.q_attn.bias', 'h.4.crossattention.q_attn.weight', 'h.4.ln_cross_attn.bias', 'h.4.ln_cross_attn.weight', 'h.5.crossattention.c_attn.bias', 'h.5.crossattention.c_attn.weight', 'h.5.crossattention.c_proj.bias', 'h.5.crossattention.c_proj.weight', 'h.5.crossattention.q_attn.bias', 'h.5.crossattention.q_attn.weight', 'h.5.ln_cross_attn.bias', 'h.5.ln_cross_attn.weight', 'h.6.crossattention.c_attn.bias', 'h.6.crossattention.c_attn.weight', 'h.6.crossattention.c_proj.bias', 'h.6.crossattention.c_proj.weight', 'h.6.crossattention.q_attn.bias', 'h.6.crossattention.q_attn.weight', 'h.6.ln_cross_attn.bias', 'h.6.ln_cross_attn.weight', 'h.7.crossattention.c_attn.bias', 'h.7.crossattention.c_attn.weight', 'h.7.crossattention.c_proj.bias', 'h.7.crossattention.c_proj.weight', 'h.7.crossattention.q_attn.bias', 'h.7.crossattention.q_attn.weight', 'h.7.ln_cross_attn.bias', 'h.7.ln_cross_attn.weight', 'h.8.crossattention.c_attn.bias', 'h.8.crossattention.c_attn.weight', 'h.8.crossattention.c_proj.bias', 'h.8.crossattention.c_proj.weight', 'h.8.crossattention.q_attn.bias', 'h.8.crossattention.q_attn.weight', 'h.8.ln_cross_attn.bias', 'h.8.ln_cross_attn.weight', 'h.9.crossattention.c_attn.bias', 'h.9.crossattention.c_attn.weight', 'h.9.crossattention.c_proj.bias', 'h.9.crossattention.c_proj.weight', 'h.9.crossattention.q_attn.bias', 'h.9.crossattention.q_attn.weight', 'h.9.ln_cross_attn.bias', 'h.9.ln_cross_attn.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+{
+ "data": "/scratch/hu.zhim/gp1/data",
+ "injection": "cross",
+ "prefix_len": 10,
+ "epochs": 5,
+ "bs": 32,
+ "lr_new": 0.0002,
+ "lr_gpt": 5e-05,
+ "warmup": 300,
+ "log_every": 50,
+ "early_sample_steps": [
+  100,
+  300
+ ],
+ "n_samples": 8,
+ "seed": 42,
+ "max_steps": 0,
+ "workers": 4,
+ "finetune": "lora",
+ "lora_r": 8,
+ "lr_lora": 0.0002,
+ "results": "m3",
+ "tag": "cross_lora",
+ "ckpt_dir": "/scratch/hu.zhim/gp1/checkpoints",
+ "test_images": 1000,
+ "save_best": true,
+ "checkpoint": "/scratch/hu.zhim/gp1/checkpoints/m3_cross_lora.pt",
+ "device": "cuda",
+ "gpu": "Tesla P100-PCIE-12GB",
+ "train_pairs": 25007,
+ "train_images": 5000,
+ "val_pairs": 20011,
+ "val_images": 5000,
+ "steps": 3910,
+ "params_total_M": 154.0,
+ "params_new_M": 29.2,
+ "params_trainable_M": 29.6,
+ "clip": "openai/clip-vit-large-patch14 (frozen)",
+ "decoder": "openai-community/gpt2"
+}
+[epoch 0] untrained val loss 4.6111 ppl 100.6
+    The U.S. Department of Justice has filed a lawsuit against the company that owns the video game company, Electronic Arts, alleging that the company
+    The U.S. Department of Justice has filed a lawsuit against the company that owns the video game company, Electronic Arts, alleging that the company
+    The U.S. Department of Justice has filed a lawsuit against the company that owns the video game company, Electronic Arts.
+
+The lawsuit
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+step    50/3910 | epoch 1 | loss 4.2151 |     18s
+step   100/3910 | epoch 1 | loss 3.3854 |     35s
+   [samples @ step 100] A man is standing in front of a large mirror. | A man is standing in front of a large window.
+step   150/3910 | epoch 1 | loss 3.2316 |     52s
+step   200/3910 | epoch 1 | loss 3.0235 |     69s
+step   250/3910 | epoch 1 | loss 2.8995 |     86s
+step   300/3910 | epoch 1 | loss 2.7914 |    102s
+   [samples @ step 300] A cat is sitting on a bed. | A man and woman are eating a meal in a restaurant.
+step   350/3910 | epoch 1 | loss 2.6789 |    120s
+step   400/3910 | epoch 1 | loss 2.6548 |    136s
+step   450/3910 | epoch 1 | loss 2.5745 |    153s
+step   500/3910 | epoch 1 | loss 2.5606 |    170s
+step   550/3910 | epoch 1 | loss 2.4704 |    187s
+step   600/3910 | epoch 1 | loss 2.4896 |    204s
+step   650/3910 | epoch 1 | loss 2.5010 |    221s
+step   700/3910 | epoch 1 | loss 2.4172 |    237s
+step   750/3910 | epoch 1 | loss 2.4427 |    255s
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[epoch 1] train 2.8036 | val 2.3861 (ppl 10.9) | 5.8 min
+    A cat is sitting on a bed next to a window.
+    A man in a kitchen preparing food.
+    A red and white double decker bus is parked in a parking lot.
+   new best val loss -> saved /scratch/hu.zhim/gp1/checkpoints/m3_cross_lora.pt
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+step   800/3910 | epoch 2 | loss 2.3323 |    355s
+step   850/3910 | epoch 2 | loss 2.2716 |    372s
+step   900/3910 | epoch 2 | loss 2.2850 |    389s
+step   950/3910 | epoch 2 | loss 2.2723 |    405s
+step  1000/3910 | epoch 2 | loss 2.2883 |    422s
+step  1050/3910 | epoch 2 | loss 2.2580 |    439s
+step  1100/3910 | epoch 2 | loss 2.2745 |    456s
+step  1150/3910 | epoch 2 | loss 2.2336 |    472s
+step  1200/3910 | epoch 2 | loss 2.1934 |    489s
+step  1250/3910 | epoch 2 | loss 2.2113 |    506s
+step  1300/3910 | epoch 2 | loss 2.2342 |    522s
+step  1350/3910 | epoch 2 | loss 2.2460 |    539s
+step  1400/3910 | epoch 2 | loss 2.2337 |    556s
+step  1450/3910 | epoch 2 | loss 2.2022 |    573s
+step  1500/3910 | epoch 2 | loss 2.2292 |    591s
+step  1550/3910 | epoch 2 | loss 2.2079 |    608s
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[epoch 2] train 2.2420 | val 2.2900 (ppl 9.9) | 11.5 min
+    A cat sitting on a bed next to a window.
+    Two men in a kitchen preparing food in a kitchen.
+    A red double decker bus parked next to a building.
+   new best val loss -> saved /scratch/hu.zhim/gp1/checkpoints/m3_cross_lora.pt
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+step  1600/3910 | epoch 3 | loss 2.0379 |    708s
+step  1650/3910 | epoch 3 | loss 1.9879 |    725s
+step  1700/3910 | epoch 3 | loss 1.9995 |    743s
+step  1750/3910 | epoch 3 | loss 1.9817 |    760s
+step  1800/3910 | epoch 3 | loss 2.0297 |    777s
+step  1850/3910 | epoch 3 | loss 2.0294 |    794s
+step  1900/3910 | epoch 3 | loss 1.9819 |    811s
+step  1950/3910 | epoch 3 | loss 2.0087 |    828s
+step  2000/3910 | epoch 3 | loss 1.9799 |    845s
+step  2050/3910 | epoch 3 | loss 2.0095 |    862s
+step  2100/3910 | epoch 3 | loss 1.9715 |    879s
+step  2150/3910 | epoch 3 | loss 2.0187 |    896s
+step  2200/3910 | epoch 3 | loss 1.9727 |    913s
+step  2250/3910 | epoch 3 | loss 1.9922 |    930s
+step  2300/3910 | epoch 3 | loss 1.9907 |    947s
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[epoch 3] train 1.9956 | val 2.2758 (ppl 9.7) | 17.4 min
+    A cat is sitting on a bed next to a window.
+    Two men in a kitchen preparing food in a restaurant.
+    A red double decker bus parked in a parking lot.
+   new best val loss -> saved /scratch/hu.zhim/gp1/checkpoints/m3_cross_lora.pt
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+step  2350/3910 | epoch 4 | loss 1.9759 |   1047s
+step  2400/3910 | epoch 4 | loss 1.7474 |   1064s
+step  2450/3910 | epoch 4 | loss 1.7408 |   1081s
+step  2500/3910 | epoch 4 | loss 1.7697 |   1098s
+step  2550/3910 | epoch 4 | loss 1.7937 |   1115s
+step  2600/3910 | epoch 4 | loss 1.7926 |   1132s
+step  2650/3910 | epoch 4 | loss 1.7752 |   1150s
+step  2700/3910 | epoch 4 | loss 1.7571 |   1167s
+step  2750/3910 | epoch 4 | loss 1.7884 |   1184s
+step  2800/3910 | epoch 4 | loss 1.8123 |   1201s
+step  2850/3910 | epoch 4 | loss 1.8026 |   1218s
+step  2900/3910 | epoch 4 | loss 1.7722 |   1235s
+step  2950/3910 | epoch 4 | loss 1.7863 |   1252s
+step  3000/3910 | epoch 4 | loss 1.8189 |   1269s
+step  3050/3910 | epoch 4 | loss 1.7972 |   1285s
+step  3100/3910 | epoch 4 | loss 1.7943 |   1302s
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[epoch 4] train 1.7822 | val 2.3086 (ppl 10.1) | 23.2 min
+    A cat is sitting on a bed next to a window.
+    Two chefs prepare food in a kitchen.
+    A red double decker bus parked in a parking lot.
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+step  3150/3910 | epoch 5 | loss 1.6718 |   1400s
+step  3200/3910 | epoch 5 | loss 1.5958 |   1417s
+step  3250/3910 | epoch 5 | loss 1.6139 |   1434s
+step  3300/3910 | epoch 5 | loss 1.5897 |   1450s
+step  3350/3910 | epoch 5 | loss 1.6066 |   1467s
+step  3400/3910 | epoch 5 | loss 1.6424 |   1484s
+step  3450/3910 | epoch 5 | loss 1.6129 |   1501s
+step  3500/3910 | epoch 5 | loss 1.6336 |   1517s
+step  3550/3910 | epoch 5 | loss 1.6288 |   1534s
+step  3600/3910 | epoch 5 | loss 1.6282 |   1551s
+step  3650/3910 | epoch 5 | loss 1.6200 |   1567s
+step  3700/3910 | epoch 5 | loss 1.6284 |   1584s
+step  3750/3910 | epoch 5 | loss 1.6154 |   1601s
+step  3800/3910 | epoch 5 | loss 1.5995 |   1618s
+step  3850/3910 | epoch 5 | loss 1.6267 |   1635s
+step  3900/3910 | epoch 5 | loss 1.6037 |   1651s
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[epoch 5] train 1.6160 | val 2.3574 (ppl 10.6) | 28.9 min
+    A cat is sitting on a bed looking out a window.
+    Two chefs prepare food in a kitchen.
+    A red double decker bus parked in a dirt parking lot.
+checkpoint /scratch/hu.zhim/gp1/checkpoints/m3_cross_lora.pt (epoch 3)
+/home/hu.zhim/GP1/scripts/train_caption.py:35: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  self.cls = torch.nn.functional.normalize(torch.load(split_dir / "clip_cls.pt")["emb"], dim=-1)
+Some weights of GPT2LMHeadModel were not initialized from the model checkpoint at openai-community/gpt2 and are newly initialized: ['h.0.crossattention.c_attn.bias', 'h.0.crossattention.c_attn.weight', 'h.0.crossattention.c_proj.bias', 'h.0.crossattention.c_proj.weight', 'h.0.crossattention.q_attn.bias', 'h.0.crossattention.q_attn.weight', 'h.0.ln_cross_attn.bias', 'h.0.ln_cross_attn.weight', 'h.1.crossattention.c_attn.bias', 'h.1.crossattention.c_attn.weight', 'h.1.crossattention.c_proj.bias', 'h.1.crossattention.c_proj.weight', 'h.1.crossattention.q_attn.bias', 'h.1.crossattention.q_attn.weight', 'h.1.ln_cross_attn.bias', 'h.1.ln_cross_attn.weight', 'h.10.crossattention.c_attn.bias', 'h.10.crossattention.c_attn.weight', 'h.10.crossattention.c_proj.bias', 'h.10.crossattention.c_proj.weight', 'h.10.crossattention.q_attn.bias', 'h.10.crossattention.q_attn.weight', 'h.10.ln_cross_attn.bias', 'h.10.ln_cross_attn.weight', 'h.11.crossattention.c_attn.bias', 'h.11.crossattention.c_attn.weight', 'h.11.crossattention.c_proj.bias', 'h.11.crossattention.c_proj.weight', 'h.11.crossattention.q_attn.bias', 'h.11.crossattention.q_attn.weight', 'h.11.ln_cross_attn.bias', 'h.11.ln_cross_attn.weight', 'h.2.crossattention.c_attn.bias', 'h.2.crossattention.c_attn.weight', 'h.2.crossattention.c_proj.bias', 'h.2.crossattention.c_proj.weight', 'h.2.crossattention.q_attn.bias', 'h.2.crossattention.q_attn.weight', 'h.2.ln_cross_attn.bias', 'h.2.ln_cross_attn.weight', 'h.3.crossattention.c_attn.bias', 'h.3.crossattention.c_attn.weight', 'h.3.crossattention.c_proj.bias', 'h.3.crossattention.c_proj.weight', 'h.3.crossattention.q_attn.bias', 'h.3.crossattention.q_attn.weight', 'h.3.ln_cross_attn.bias', 'h.3.ln_cross_attn.weight', 'h.4.crossattention.c_attn.bias', 'h.4.crossattention.c_attn.weight', 'h.4.crossattention.c_proj.bias', 'h.4.crossattention.c_proj.weight', 'h.4.crossattention.q_attn.bias', 'h.4.crossattention.q_attn.weight', 'h.4.ln_cross_attn.bias', 'h.4.ln_cross_attn.weight', 'h.5.crossattention.c_attn.bias', 'h.5.crossattention.c_attn.weight', 'h.5.crossattention.c_proj.bias', 'h.5.crossattention.c_proj.weight', 'h.5.crossattention.q_attn.bias', 'h.5.crossattention.q_attn.weight', 'h.5.ln_cross_attn.bias', 'h.5.ln_cross_attn.weight', 'h.6.crossattention.c_attn.bias', 'h.6.crossattention.c_attn.weight', 'h.6.crossattention.c_proj.bias', 'h.6.crossattention.c_proj.weight', 'h.6.crossattention.q_attn.bias', 'h.6.crossattention.q_attn.weight', 'h.6.ln_cross_attn.bias', 'h.6.ln_cross_attn.weight', 'h.7.crossattention.c_attn.bias', 'h.7.crossattention.c_attn.weight', 'h.7.crossattention.c_proj.bias', 'h.7.crossattention.c_proj.weight', 'h.7.crossattention.q_attn.bias', 'h.7.crossattention.q_attn.weight', 'h.7.ln_cross_attn.bias', 'h.7.ln_cross_attn.weight', 'h.8.crossattention.c_attn.bias', 'h.8.crossattention.c_attn.weight', 'h.8.crossattention.c_proj.bias', 'h.8.crossattention.c_proj.weight', 'h.8.crossattention.q_attn.bias', 'h.8.crossattention.q_attn.weight', 'h.8.ln_cross_attn.bias', 'h.8.ln_cross_attn.weight', 'h.9.crossattention.c_attn.bias', 'h.9.crossattention.c_attn.weight', 'h.9.crossattention.c_proj.bias', 'h.9.crossattention.c_proj.weight', 'h.9.crossattention.q_attn.bias', 'h.9.crossattention.q_attn.weight', 'h.9.ln_cross_attn.bias', 'h.9.ln_cross_attn.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+{
+ "data": "/scratch/hu.zhim/gp1/data",
+ "injection": "cross",
+ "prefix_len": 10,
+ "epochs": 5,
+ "bs": 32,
+ "lr_new": 0.0002,
+ "lr_gpt": 5e-05,
+ "warmup": 300,
+ "log_every": 50,
+ "early_sample_steps": [
+  100,
+  300
+ ],
+ "n_samples": 8,
+ "seed": 42,
+ "max_steps": 0,
+ "workers": 4,
+ "finetune": "frozen",
+ "lora_r": 8,
+ "lr_lora": 0.0002,
+ "results": "m3",
+ "tag": "cross_frozen",
+ "ckpt_dir": "/scratch/hu.zhim/gp1/checkpoints",
+ "test_images": 1000,
+ "save_best": true,
+ "checkpoint": "/scratch/hu.zhim/gp1/checkpoints/m3_cross_frozen.pt",
+ "device": "cuda",
+ "gpu": "Tesla P100-PCIE-12GB",
+ "train_pairs": 25007,
+ "train_images": 5000,
+ "val_pairs": 20011,
+ "val_images": 5000,
+ "steps": 3910,
+ "params_total_M": 153.6,
+ "params_new_M": 29.2,
+ "params_trainable_M": 29.16,
+ "clip": "openai/clip-vit-large-patch14 (frozen)",
+ "decoder": "openai-community/gpt2"
+}
+[epoch 0] untrained val loss 4.6111 ppl 100.6
+    The U.S. Department of Justice has filed a lawsuit against the company that owns the video game company, Electronic Arts, alleging that the company
+    The U.S. Department of Justice has filed a lawsuit against the company that owns the video game company, Electronic Arts, alleging that the company
+    The U.S. Department of Justice has filed a lawsuit against the company that owns the video game company, Electronic Arts.
+
+The lawsuit
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+step    50/3910 | epoch 1 | loss 4.2206 |     17s
+step   100/3910 | epoch 1 | loss 3.3436 |     33s
+   [samples @ step 100] A man is sitting on a chair with a large bag of food. | A man is standing on a bench with a bag of food.
+step   150/3910 | epoch 1 | loss 3.1999 |     49s
+step   200/3910 | epoch 1 | loss 3.0225 |     66s
+step   250/3910 | epoch 1 | loss 2.8740 |     82s
+step   300/3910 | epoch 1 | loss 2.8049 |     98s
+   [samples @ step 300] A cat laying on a bed with a blanket. | A man is eating a sandwich at a restaurant.
+step   350/3910 | epoch 1 | loss 2.7394 |    114s
+step   400/3910 | epoch 1 | loss 2.6921 |    130s
+step   450/3910 | epoch 1 | loss 2.6070 |    146s
+step   500/3910 | epoch 1 | loss 2.5871 |    162s
+step   550/3910 | epoch 1 | loss 2.5371 |    178s
+step   600/3910 | epoch 1 | loss 2.5072 |    195s
+step   650/3910 | epoch 1 | loss 2.4910 |    211s
+step   700/3910 | epoch 1 | loss 2.4268 |    227s
+step   750/3910 | epoch 1 | loss 2.4831 |    243s
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[epoch 1] train 2.8230 | val 2.4030 (ppl 11.1) | 5.5 min
+    A cat is sitting on a window sill.
+    A man in a kitchen preparing food in a kitchen.
+    A red and white double decker bus is parked next to a green and white building.
+   new best val loss -> saved /scratch/hu.zhim/gp1/checkpoints/m3_cross_frozen.pt
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+step   800/3910 | epoch 2 | loss 2.4558 |    340s
+step   850/3910 | epoch 2 | loss 2.3383 |    356s
+step   900/3910 | epoch 2 | loss 2.3256 |    372s
+step   950/3910 | epoch 2 | loss 2.3041 |    388s
+step  1000/3910 | epoch 2 | loss 2.2729 |    404s
+step  1050/3910 | epoch 2 | loss 2.2691 |    420s
+step  1100/3910 | epoch 2 | loss 2.2514 |    436s
+step  1150/3910 | epoch 2 | loss 2.2672 |    452s
+step  1200/3910 | epoch 2 | loss 2.2674 |    469s
+step  1250/3910 | epoch 2 | loss 2.2694 |    485s
+step  1300/3910 | epoch 2 | loss 2.2666 |    501s
+step  1350/3910 | epoch 2 | loss 2.2490 |    517s
+step  1400/3910 | epoch 2 | loss 2.2001 |    533s
+step  1450/3910 | epoch 2 | loss 2.2322 |    549s
+step  1500/3910 | epoch 2 | loss 2.2691 |    565s
+step  1550/3910 | epoch 2 | loss 2.2497 |    582s
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[epoch 2] train 2.2683 | val 2.3044 (ppl 10.0) | 11.1 min
+    A cat is sitting on a window sill.
+    Two men in a kitchen preparing food.
+    A red and white bus parked in a parking lot.
+   new best val loss -> saved /scratch/hu.zhim/gp1/checkpoints/m3_cross_frozen.pt
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+step  1600/3910 | epoch 3 | loss 2.0841 |    679s
+step  1650/3910 | epoch 3 | loss 2.0537 |    695s
+step  1700/3910 | epoch 3 | loss 1.9967 |    711s
+step  1750/3910 | epoch 3 | loss 2.0479 |    728s
+step  1800/3910 | epoch 3 | loss 2.0407 |    744s
+step  1850/3910 | epoch 3 | loss 2.0311 |    760s
+step  1900/3910 | epoch 3 | loss 2.0139 |    776s
+step  1950/3910 | epoch 3 | loss 2.0293 |    792s
+step  2000/3910 | epoch 3 | loss 2.0194 |    808s
+step  2050/3910 | epoch 3 | loss 2.0363 |    824s
+step  2100/3910 | epoch 3 | loss 2.0213 |    840s
+step  2150/3910 | epoch 3 | loss 2.0390 |    856s
+step  2200/3910 | epoch 3 | loss 2.0322 |    872s
+step  2250/3910 | epoch 3 | loss 2.0353 |    889s
+step  2300/3910 | epoch 3 | loss 2.0192 |    905s
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[epoch 3] train 2.0312 | val 2.2787 (ppl 9.8) | 16.6 min
+    A cat is sitting on a window sill.
+    Two chefs prepare food in a kitchen.
+    A red double decker bus parked in a parking lot.
+   new best val loss -> saved /scratch/hu.zhim/gp1/checkpoints/m3_cross_frozen.pt
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+step  2350/3910 | epoch 4 | loss 2.0199 |   1002s
+step  2400/3910 | epoch 4 | loss 1.7959 |   1018s
+step  2450/3910 | epoch 4 | loss 1.8318 |   1034s
+step  2500/3910 | epoch 4 | loss 1.8100 |   1050s
+step  2550/3910 | epoch 4 | loss 1.8304 |   1066s
+step  2600/3910 | epoch 4 | loss 1.8186 |   1082s
+step  2650/3910 | epoch 4 | loss 1.8546 |   1099s
+step  2700/3910 | epoch 4 | loss 1.8404 |   1115s
+step  2750/3910 | epoch 4 | loss 1.7949 |   1131s
+step  2800/3910 | epoch 4 | loss 1.8075 |   1147s
+step  2850/3910 | epoch 4 | loss 1.8363 |   1163s
+step  2900/3910 | epoch 4 | loss 1.8308 |   1179s
+step  2950/3910 | epoch 4 | loss 1.8587 |   1195s
+step  3000/3910 | epoch 4 | loss 1.8416 |   1212s
+step  3050/3910 | epoch 4 | loss 1.8647 |   1228s
+step  3100/3910 | epoch 4 | loss 1.8521 |   1245s
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[epoch 4] train 1.8319 | val 2.2951 (ppl 9.9) | 22.2 min
+    A cat sitting on a window ledge near a window.
+    Two men in a kitchen preparing food.
+    A red double decker bus parked in a parking lot.
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+step  3150/3910 | epoch 5 | loss 1.7693 |   1340s
+step  3200/3910 | epoch 5 | loss 1.6706 |   1357s
+step  3250/3910 | epoch 5 | loss 1.6959 |   1373s
+step  3300/3910 | epoch 5 | loss 1.6782 |   1389s
+step  3350/3910 | epoch 5 | loss 1.6749 |   1405s
+step  3400/3910 | epoch 5 | loss 1.6792 |   1421s
+step  3450/3910 | epoch 5 | loss 1.6684 |   1437s
+step  3500/3910 | epoch 5 | loss 1.6986 |   1453s
+step  3550/3910 | epoch 5 | loss 1.6568 |   1469s
+step  3600/3910 | epoch 5 | loss 1.6463 |   1485s
+step  3650/3910 | epoch 5 | loss 1.6620 |   1502s
+step  3700/3910 | epoch 5 | loss 1.6944 |   1518s
+step  3750/3910 | epoch 5 | loss 1.6724 |   1534s
+step  3800/3910 | epoch 5 | loss 1.6738 |   1550s
+step  3850/3910 | epoch 5 | loss 1.6994 |   1566s
+step  3900/3910 | epoch 5 | loss 1.6669 |   1582s
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+[epoch 5] train 1.6764 | val 2.3326 (ppl 10.3) | 27.7 min
+    A cat is sitting on a window ledge.
+    Two chefs prepare food in a kitchen.
+    A red double decker bus parked next to a red double decker bus.
+checkpoint /scratch/hu.zhim/gp1/checkpoints/m3_cross_frozen.pt (epoch 3)
+/home/hu.zhim/GP1/scripts/eval_m3.py:72: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  ck = torch.load(path, map_location="cpu")
+Some weights of GPT2LMHeadModel were not initialized from the model checkpoint at openai-community/gpt2 and are newly initialized: ['h.0.crossattention.c_attn.bias', 'h.0.crossattention.c_attn.weight', 'h.0.crossattention.c_proj.bias', 'h.0.crossattention.c_proj.weight', 'h.0.crossattention.q_attn.bias', 'h.0.crossattention.q_attn.weight', 'h.0.ln_cross_attn.bias', 'h.0.ln_cross_attn.weight', 'h.1.crossattention.c_attn.bias', 'h.1.crossattention.c_attn.weight', 'h.1.crossattention.c_proj.bias', 'h.1.crossattention.c_proj.weight', 'h.1.crossattention.q_attn.bias', 'h.1.crossattention.q_attn.weight', 'h.1.ln_cross_attn.bias', 'h.1.ln_cross_attn.weight', 'h.10.crossattention.c_attn.bias', 'h.10.crossattention.c_attn.weight', 'h.10.crossattention.c_proj.bias', 'h.10.crossattention.c_proj.weight', 'h.10.crossattention.q_attn.bias', 'h.10.crossattention.q_attn.weight', 'h.10.ln_cross_attn.bias', 'h.10.ln_cross_attn.weight', 'h.11.crossattention.c_attn.bias', 'h.11.crossattention.c_attn.weight', 'h.11.crossattention.c_proj.bias', 'h.11.crossattention.c_proj.weight', 'h.11.crossattention.q_attn.bias', 'h.11.crossattention.q_attn.weight', 'h.11.ln_cross_attn.bias', 'h.11.ln_cross_attn.weight', 'h.2.crossattention.c_attn.bias', 'h.2.crossattention.c_attn.weight', 'h.2.crossattention.c_proj.bias', 'h.2.crossattention.c_proj.weight', 'h.2.crossattention.q_attn.bias', 'h.2.crossattention.q_attn.weight', 'h.2.ln_cross_attn.bias', 'h.2.ln_cross_attn.weight', 'h.3.crossattention.c_attn.bias', 'h.3.crossattention.c_attn.weight', 'h.3.crossattention.c_proj.bias', 'h.3.crossattention.c_proj.weight', 'h.3.crossattention.q_attn.bias', 'h.3.crossattention.q_attn.weight', 'h.3.ln_cross_attn.bias', 'h.3.ln_cross_attn.weight', 'h.4.crossattention.c_attn.bias', 'h.4.crossattention.c_attn.weight', 'h.4.crossattention.c_proj.bias', 'h.4.crossattention.c_proj.weight', 'h.4.crossattention.q_attn.bias', 'h.4.crossattention.q_attn.weight', 'h.4.ln_cross_attn.bias', 'h.4.ln_cross_attn.weight', 'h.5.crossattention.c_attn.bias', 'h.5.crossattention.c_attn.weight', 'h.5.crossattention.c_proj.bias', 'h.5.crossattention.c_proj.weight', 'h.5.crossattention.q_attn.bias', 'h.5.crossattention.q_attn.weight', 'h.5.ln_cross_attn.bias', 'h.5.ln_cross_attn.weight', 'h.6.crossattention.c_attn.bias', 'h.6.crossattention.c_attn.weight', 'h.6.crossattention.c_proj.bias', 'h.6.crossattention.c_proj.weight', 'h.6.crossattention.q_attn.bias', 'h.6.crossattention.q_attn.weight', 'h.6.ln_cross_attn.bias', 'h.6.ln_cross_attn.weight', 'h.7.crossattention.c_attn.bias', 'h.7.crossattention.c_attn.weight', 'h.7.crossattention.c_proj.bias', 'h.7.crossattention.c_proj.weight', 'h.7.crossattention.q_attn.bias', 'h.7.crossattention.q_attn.weight', 'h.7.ln_cross_attn.bias', 'h.7.ln_cross_attn.weight', 'h.8.crossattention.c_attn.bias', 'h.8.crossattention.c_attn.weight', 'h.8.crossattention.c_proj.bias', 'h.8.crossattention.c_proj.weight', 'h.8.crossattention.q_attn.bias', 'h.8.crossattention.q_attn.weight', 'h.8.ln_cross_attn.bias', 'h.8.ln_cross_attn.weight', 'h.9.crossattention.c_attn.bias', 'h.9.crossattention.c_attn.weight', 'h.9.crossattention.c_proj.bias', 'h.9.crossattention.c_proj.weight', 'h.9.crossattention.q_attn.bias', 'h.9.crossattention.q_attn.weight', 'h.9.ln_cross_attn.bias', 'h.9.ln_cross_attn.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+/home/hu.zhim/GP1/scripts/train_caption.py:35: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  self.cls = torch.nn.functional.normalize(torch.load(split_dir / "clip_cls.pt")["emb"], dim=-1)
+/home/hu.zhim/GP1/scripts/eval_m3.py:106: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  raw_cls = torch.load(a.data / "val" / "clip_cls.pt")["emb"][idx]
+cross_full {'strategy': 'greedy', 'BLEU-4': 0.3059, 'METEOR': 0.2572, 'ROUGE-L': np.float64(0.5375), 'CIDEr': np.float64(1.007), 'CLIPScore': 0.6042, 'distinct-2': 0.1834, 'sec_per_image': 0.0348}
+cross_full {'strategy': 'beam:2', 'BLEU-4': 0.3207, 'METEOR': 0.2632, 'ROUGE-L': np.float64(0.5484), 'CIDEr': np.float64(1.0477), 'CLIPScore': 0.6027, 'distinct-2': 0.179, 'sec_per_image': 0.0623}
+cross_full {'strategy': 'beam:3', 'BLEU-4': 0.3344, 'METEOR': 0.2672, 'ROUGE-L': np.float64(0.5572), 'CIDEr': np.float64(1.0752), 'CLIPScore': 0.6009, 'distinct-2': 0.1652, 'sec_per_image': 0.0858}
+cross_full {'strategy': 'beam:5', 'BLEU-4': 0.3304, 'METEOR': 0.2669, 'ROUGE-L': np.float64(0.5521), 'CIDEr': np.float64(1.0877), 'CLIPScore': 0.5996, 'distinct-2': 0.1565, 'sec_per_image': 0.1401}
+cross_full {'strategy': 'beam:8', 'BLEU-4': 0.3305, 'METEOR': 0.2684, 'ROUGE-L': np.float64(0.5546), 'CIDEr': np.float64(1.0858), 'CLIPScore': 0.599, 'distinct-2': 0.15, 'sec_per_image': 0.2232}
+cross_full {'strategy': 'beam:10', 'BLEU-4': 0.3271, 'METEOR': 0.268, 'ROUGE-L': np.float64(0.5524), 'CIDEr': np.float64(1.0835), 'CLIPScore': 0.5973, 'distinct-2': 0.1456, 'sec_per_image': 0.2783}
+cross_full {'strategy': 'sample:0.25', 'BLEU-4': 0.2923, 'METEOR': 0.2528, 'ROUGE-L': np.float64(0.5306), 'CIDEr': np.float64(0.9823), 'CLIPScore': 0.6017, 'distinct-2': 0.1998, 'sec_per_image': 0.0347}
+cross_full {'strategy': 'sample:0.5', 'BLEU-4': 0.261, 'METEOR': 0.2418, 'ROUGE-L': np.float64(0.5097), 'CIDEr': np.float64(0.8848), 'CLIPScore': 0.5947, 'distinct-2': 0.2597, 'sec_per_image': 0.0357}
+cross_full {'strategy': 'sample:0.75', 'BLEU-4': 0.1897, 'METEOR': 0.2182, 'ROUGE-L': np.float64(0.4632), 'CIDEr': np.float64(0.7091), 'CLIPScore': 0.5754, 'distinct-2': 0.359, 'sec_per_image': 0.0392}
+cross_full {'strategy': 'sample:1.0', 'BLEU-4': 0.13, 'METEOR': 0.1883, 'ROUGE-L': np.float64(0.3982), 'CIDEr': np.float64(0.5005), 'CLIPScore': 0.5426, 'distinct-2': 0.4996, 'sec_per_image': 0.045}
+cross_full {'strategy': 'sample:1.25', 'BLEU-4': 0.0554, 'METEOR': 0.1332, 'ROUGE-L': np.float64(0.2849), 'CIDEr': np.float64(0.2324), 'CLIPScore': 0.4843, 'distinct-2': 0.7308, 'sec_per_image': 0.0628}
+cross_full {'strategy': 'sample:1.5', 'BLEU-4': 0.0099, 'METEOR': 0.0873, 'ROUGE-L': np.float64(0.1778), 'CIDEr': np.float64(0.0738), 'CLIPScore': 0.4107, 'distinct-2': 0.9126, 'sec_per_image': 0.0684}
+cross_full {'strategy': 'nucleus:0.5:1.0', 'BLEU-4': 0.2573, 'METEOR': 0.2383, 'ROUGE-L': np.float64(0.5062), 'CIDEr': np.float64(0.8902), 'CLIPScore': 0.5928, 'distinct-2': 0.2555, 'sec_per_image': 0.0347}
+cross_full {'strategy': 'nucleus:0.9:1.0', 'BLEU-4': 0.1574, 'METEOR': 0.2022, 'ROUGE-L': np.float64(0.4303), 'CIDEr': np.float64(0.6014), 'CLIPScore': 0.5615, 'distinct-2': 0.4156, 'sec_per_image': 0.043}
+/home/hu.zhim/GP1/scripts/eval_m3.py:72: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  ck = torch.load(path, map_location="cpu")
+Some weights of GPT2LMHeadModel were not initialized from the model checkpoint at openai-community/gpt2 and are newly initialized: ['h.0.crossattention.c_attn.bias', 'h.0.crossattention.c_attn.weight', 'h.0.crossattention.c_proj.bias', 'h.0.crossattention.c_proj.weight', 'h.0.crossattention.q_attn.bias', 'h.0.crossattention.q_attn.weight', 'h.0.ln_cross_attn.bias', 'h.0.ln_cross_attn.weight', 'h.1.crossattention.c_attn.bias', 'h.1.crossattention.c_attn.weight', 'h.1.crossattention.c_proj.bias', 'h.1.crossattention.c_proj.weight', 'h.1.crossattention.q_attn.bias', 'h.1.crossattention.q_attn.weight', 'h.1.ln_cross_attn.bias', 'h.1.ln_cross_attn.weight', 'h.10.crossattention.c_attn.bias', 'h.10.crossattention.c_attn.weight', 'h.10.crossattention.c_proj.bias', 'h.10.crossattention.c_proj.weight', 'h.10.crossattention.q_attn.bias', 'h.10.crossattention.q_attn.weight', 'h.10.ln_cross_attn.bias', 'h.10.ln_cross_attn.weight', 'h.11.crossattention.c_attn.bias', 'h.11.crossattention.c_attn.weight', 'h.11.crossattention.c_proj.bias', 'h.11.crossattention.c_proj.weight', 'h.11.crossattention.q_attn.bias', 'h.11.crossattention.q_attn.weight', 'h.11.ln_cross_attn.bias', 'h.11.ln_cross_attn.weight', 'h.2.crossattention.c_attn.bias', 'h.2.crossattention.c_attn.weight', 'h.2.crossattention.c_proj.bias', 'h.2.crossattention.c_proj.weight', 'h.2.crossattention.q_attn.bias', 'h.2.crossattention.q_attn.weight', 'h.2.ln_cross_attn.bias', 'h.2.ln_cross_attn.weight', 'h.3.crossattention.c_attn.bias', 'h.3.crossattention.c_attn.weight', 'h.3.crossattention.c_proj.bias', 'h.3.crossattention.c_proj.weight', 'h.3.crossattention.q_attn.bias', 'h.3.crossattention.q_attn.weight', 'h.3.ln_cross_attn.bias', 'h.3.ln_cross_attn.weight', 'h.4.crossattention.c_attn.bias', 'h.4.crossattention.c_attn.weight', 'h.4.crossattention.c_proj.bias', 'h.4.crossattention.c_proj.weight', 'h.4.crossattention.q_attn.bias', 'h.4.crossattention.q_attn.weight', 'h.4.ln_cross_attn.bias', 'h.4.ln_cross_attn.weight', 'h.5.crossattention.c_attn.bias', 'h.5.crossattention.c_attn.weight', 'h.5.crossattention.c_proj.bias', 'h.5.crossattention.c_proj.weight', 'h.5.crossattention.q_attn.bias', 'h.5.crossattention.q_attn.weight', 'h.5.ln_cross_attn.bias', 'h.5.ln_cross_attn.weight', 'h.6.crossattention.c_attn.bias', 'h.6.crossattention.c_attn.weight', 'h.6.crossattention.c_proj.bias', 'h.6.crossattention.c_proj.weight', 'h.6.crossattention.q_attn.bias', 'h.6.crossattention.q_attn.weight', 'h.6.ln_cross_attn.bias', 'h.6.ln_cross_attn.weight', 'h.7.crossattention.c_attn.bias', 'h.7.crossattention.c_attn.weight', 'h.7.crossattention.c_proj.bias', 'h.7.crossattention.c_proj.weight', 'h.7.crossattention.q_attn.bias', 'h.7.crossattention.q_attn.weight', 'h.7.ln_cross_attn.bias', 'h.7.ln_cross_attn.weight', 'h.8.crossattention.c_attn.bias', 'h.8.crossattention.c_attn.weight', 'h.8.crossattention.c_proj.bias', 'h.8.crossattention.c_proj.weight', 'h.8.crossattention.q_attn.bias', 'h.8.crossattention.q_attn.weight', 'h.8.ln_cross_attn.bias', 'h.8.ln_cross_attn.weight', 'h.9.crossattention.c_attn.bias', 'h.9.crossattention.c_attn.weight', 'h.9.crossattention.c_proj.bias', 'h.9.crossattention.c_proj.weight', 'h.9.crossattention.q_attn.bias', 'h.9.crossattention.q_attn.weight', 'h.9.ln_cross_attn.bias', 'h.9.ln_cross_attn.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+/home/hu.zhim/GP1/scripts/train_caption.py:35: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  self.cls = torch.nn.functional.normalize(torch.load(split_dir / "clip_cls.pt")["emb"], dim=-1)
+/home/hu.zhim/GP1/scripts/eval_m3.py:106: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  raw_cls = torch.load(a.data / "val" / "clip_cls.pt")["emb"][idx]
+cross_lora {'strategy': 'greedy', 'BLEU-4': 0.2949, 'METEOR': 0.2593, 'ROUGE-L': np.float64(0.5347), 'CIDEr': np.float64(1.0179), 'CLIPScore': 0.6069, 'distinct-2': 0.2073, 'sec_per_image': 0.0324}
+cross_lora {'strategy': 'beam:3', 'BLEU-4': 0.3131, 'METEOR': 0.2679, 'ROUGE-L': np.float64(0.5466), 'CIDEr': np.float64(1.0727), 'CLIPScore': 0.6058, 'distinct-2': 0.1861, 'sec_per_image': 0.0972}
+cross_lora {'strategy': 'nucleus:0.9:1.0', 'BLEU-4': 0.1579, 'METEOR': 0.2066, 'ROUGE-L': np.float64(0.4254), 'CIDEr': np.float64(0.6004), 'CLIPScore': 0.5659, 'distinct-2': 0.4376, 'sec_per_image': 0.0459}
+Some weights of GPT2LMHeadModel were not initialized from the model checkpoint at openai-community/gpt2 and are newly initialized: ['h.0.crossattention.c_attn.bias', 'h.0.crossattention.c_attn.weight', 'h.0.crossattention.c_proj.bias', 'h.0.crossattention.c_proj.weight', 'h.0.crossattention.q_attn.bias', 'h.0.crossattention.q_attn.weight', 'h.0.ln_cross_attn.bias', 'h.0.ln_cross_attn.weight', 'h.1.crossattention.c_attn.bias', 'h.1.crossattention.c_attn.weight', 'h.1.crossattention.c_proj.bias', 'h.1.crossattention.c_proj.weight', 'h.1.crossattention.q_attn.bias', 'h.1.crossattention.q_attn.weight', 'h.1.ln_cross_attn.bias', 'h.1.ln_cross_attn.weight', 'h.10.crossattention.c_attn.bias', 'h.10.crossattention.c_attn.weight', 'h.10.crossattention.c_proj.bias', 'h.10.crossattention.c_proj.weight', 'h.10.crossattention.q_attn.bias', 'h.10.crossattention.q_attn.weight', 'h.10.ln_cross_attn.bias', 'h.10.ln_cross_attn.weight', 'h.11.crossattention.c_attn.bias', 'h.11.crossattention.c_attn.weight', 'h.11.crossattention.c_proj.bias', 'h.11.crossattention.c_proj.weight', 'h.11.crossattention.q_attn.bias', 'h.11.crossattention.q_attn.weight', 'h.11.ln_cross_attn.bias', 'h.11.ln_cross_attn.weight', 'h.2.crossattention.c_attn.bias', 'h.2.crossattention.c_attn.weight', 'h.2.crossattention.c_proj.bias', 'h.2.crossattention.c_proj.weight', 'h.2.crossattention.q_attn.bias', 'h.2.crossattention.q_attn.weight', 'h.2.ln_cross_attn.bias', 'h.2.ln_cross_attn.weight', 'h.3.crossattention.c_attn.bias', 'h.3.crossattention.c_attn.weight', 'h.3.crossattention.c_proj.bias', 'h.3.crossattention.c_proj.weight', 'h.3.crossattention.q_attn.bias', 'h.3.crossattention.q_attn.weight', 'h.3.ln_cross_attn.bias', 'h.3.ln_cross_attn.weight', 'h.4.crossattention.c_attn.bias', 'h.4.crossattention.c_attn.weight', 'h.4.crossattention.c_proj.bias', 'h.4.crossattention.c_proj.weight', 'h.4.crossattention.q_attn.bias', 'h.4.crossattention.q_attn.weight', 'h.4.ln_cross_attn.bias', 'h.4.ln_cross_attn.weight', 'h.5.crossattention.c_attn.bias', 'h.5.crossattention.c_attn.weight', 'h.5.crossattention.c_proj.bias', 'h.5.crossattention.c_proj.weight', 'h.5.crossattention.q_attn.bias', 'h.5.crossattention.q_attn.weight', 'h.5.ln_cross_attn.bias', 'h.5.ln_cross_attn.weight', 'h.6.crossattention.c_attn.bias', 'h.6.crossattention.c_attn.weight', 'h.6.crossattention.c_proj.bias', 'h.6.crossattention.c_proj.weight', 'h.6.crossattention.q_attn.bias', 'h.6.crossattention.q_attn.weight', 'h.6.ln_cross_attn.bias', 'h.6.ln_cross_attn.weight', 'h.7.crossattention.c_attn.bias', 'h.7.crossattention.c_attn.weight', 'h.7.crossattention.c_proj.bias', 'h.7.crossattention.c_proj.weight', 'h.7.crossattention.q_attn.bias', 'h.7.crossattention.q_attn.weight', 'h.7.ln_cross_attn.bias', 'h.7.ln_cross_attn.weight', 'h.8.crossattention.c_attn.bias', 'h.8.crossattention.c_attn.weight', 'h.8.crossattention.c_proj.bias', 'h.8.crossattention.c_proj.weight', 'h.8.crossattention.q_attn.bias', 'h.8.crossattention.q_attn.weight', 'h.8.ln_cross_attn.bias', 'h.8.ln_cross_attn.weight', 'h.9.crossattention.c_attn.bias', 'h.9.crossattention.c_attn.weight', 'h.9.crossattention.c_proj.bias', 'h.9.crossattention.c_proj.weight', 'h.9.crossattention.q_attn.bias', 'h.9.crossattention.q_attn.weight', 'h.9.ln_cross_attn.bias', 'h.9.ln_cross_attn.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+cross_frozen {'strategy': 'greedy', 'BLEU-4': 0.3071, 'METEOR': 0.2569, 'ROUGE-L': np.float64(0.5403), 'CIDEr': np.float64(1.0213), 'CLIPScore': 0.6021, 'distinct-2': 0.2019, 'sec_per_image': 0.0307}
+cross_frozen {'strategy': 'beam:3', 'BLEU-4': 0.3305, 'METEOR': 0.268, 'ROUGE-L': np.float64(0.5565), 'CIDEr': np.float64(1.1034), 'CLIPScore': 0.604, 'distinct-2': 0.1868, 'sec_per_image': 0.0938}
+cross_frozen {'strategy': 'nucleus:0.9:1.0', 'BLEU-4': 0.1505, 'METEOR': 0.2033, 'ROUGE-L': np.float64(0.428), 'CIDEr': np.float64(0.6005), 'CLIPScore': 0.5651, 'distinct-2': 0.4311, 'sec_per_image': 0.0424}
