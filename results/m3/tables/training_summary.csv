@@ -1,0 +1,7 @@
+Injection,Fine-tuning,tag,Trainable params (M),Best epoch,Best val loss,Val loss @ epoch 5,Train min
+Cross-attention,Prefix tuning (frozen GPT-2),cross_frozen,29.16,3,2.2787,2.3326,27.7
+Cross-attention,Full fine-tuning,cross_full,153.6,2,2.2288,2.4533,33.4
+Cross-attention,LoRA,cross_lora,29.6,3,2.2758,2.3574,28.9
+Prefix conditioning,Prefix tuning (frozen GPT-2),prefix_frozen,32.45,5,2.4965,2.4965,8.5
+Prefix conditioning,Full fine-tuning,prefix_full,156.89,3,2.2318,2.2729,11.5
+Prefix conditioning,LoRA,prefix_lora,32.89,4,2.3636,2.3639,9.0

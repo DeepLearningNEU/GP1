@@ -30,7 +30,8 @@ def fmt(v):
         f = float(v)
     except (TypeError, ValueError):
         return html.escape(str(v))
-    return str(v) if "." not in str(v) else f"{f:.3f}"
+    dec = str(v).split(".")[1] if "." in str(v) else ""
+    return f"{f:.3f}" if len(dec) > 3 else str(v)
 
 
 def table(rs, cols, bold_max=()):
@@ -56,8 +57,10 @@ def main():
     T = json.load(open(DOCS / "m3_text.json"))
     cfg = {p.parent.name: json.load(open(p)) for p in RES.glob("*/config.json")}
     c0 = cfg["prefix_full"]
-    train = rows("training_summary.csv")
-    main_t = rows("finetuning_comparison_beam3.csv")
+    order = lambda r: (r["Injection"] != "Cross-attention", ["Full fine-tuning", "LoRA", "Prefix tuning (frozen GPT-2)"].index(r["Fine-tuning"]))
+    train = sorted(rows("training_summary.csv"), key=order)
+    main_t = sorted(rows("finetuning_comparison_beam3.csv"), key=order)
+    gpus = {inj: cfg[f"{inj}_full"].get("gpu", "") for inj in ("prefix", "cross")}
     dec = rows("decoding_strategies.csv")
     qual = rows("qualitative_examples.csv")
     qs = json.load(open(TAB / "qualitative_summary.json"))
@@ -72,9 +75,17 @@ def main():
                             **{k: r[k] for k in M}, "distinct-2": r["distinct-2"], "Unique": r["unique_captions"], "Sec/img": r["sec_per_image"]})
         return out
 
+    rand_rows = ""
+    for q in [q for q in qual if q["group"] == "random"]:
+        rand_rows += (f"<tr><td class='im'>{thumb(q['file_name'], 92)}</td><td>"
+                      f"<span class='lab'>greedy:</span> {html.escape(q['greedy'])}<br>"
+                      f"<span class='lab'>beam-3:</span> {html.escape(q['beam:3'])}<br>"
+                      f"<span class='lab'>nucleus p=0.9:</span> {html.escape(q['nucleus:0.9:1.0'])}<br>"
+                      f"<span class='lab'>reference:</span> {html.escape(q['reference'])}</td>"
+                      f"<td>{float(q['CLIPScore']):.3f}</td><td>{float(q['CIDEr']):.3f}</td></tr>")
     qual_rows = ""
     for q in [q for q in qual if q["group"] != "random"]:
-        qual_rows += (f"<tr><td class='im'>{thumb(q['file_name'])}</td><td><i>{html.escape(q['group'])}</i><br>"
+        qual_rows += (f"<tr><td class='im'>{thumb(q['file_name'], 92)}</td><td><i>{html.escape(q['group'])}</i><br>"
                       f"<span class='lab'>beam-3:</span> {html.escape(q['beam:3'])}<br>"
                       f"<span class='lab'>reference:</span> {html.escape(q['reference'])}</td>"
                       f"<td>{float(q['CLIPScore']):.3f}</td><td>{float(q['CIDEr']):.3f}</td></tr>")
@@ -101,7 +112,7 @@ def main():
   table {{ width: 100%; border-collapse: collapse; margin: 4px 0 6px; font-size: 9pt; page-break-inside: avoid; }}
   th, td {{ border: 1px solid #999; padding: 2px 4px; text-align: left; vertical-align: top; }}
   th {{ background: #eee; }}
-  td.im {{ width: 112px; }} .lab {{ color: #444; font-style: italic; }}
+  td.im {{ width: 94px; }} .lab {{ color: #444; font-style: italic; }}
   .fig {{ text-align: center; margin: 6px 0 2px; page-break-inside: avoid; }}
   .cap {{ text-align: center; font-size: 9.5pt; color: #333; margin-bottom: 8px; }}
   .pb {{ page-break-before: always; }}
@@ -134,7 +145,7 @@ def main():
   <li><b>Training set:</b> 5,000 COCO train2017 images with all of their captions ({c0['train_pairs']:,} image–caption pairs).</li>
   <li><b>Model-selection set:</b> COCO val2017 images 1,001–5,000. After every epoch we compute the validation loss on these images and keep the checkpoint with the lowest loss. This early stopping fixes the overfitting we observed in Milestone 2.</li>
   <li><b>Test set:</b> the first 1,000 val2017 images, each with 5 human reference captions. These images are not used for training or model selection, and every number in Section 2 is computed on them.</li>
-  <li><b>Optimization:</b> AdamW, batch {c0['bs']}, {c0['warmup']} warm-up steps then linear decay, gradient clipping 1.0, at most {c0['epochs']} epochs. All 6 models were trained on NEU Explorer HPC GPUs ({html.escape(c0.get('gpu', ''))}).</li>
+  <li><b>Optimization:</b> AdamW, batch {c0['bs']}, {c0['warmup']} warm-up steps then linear decay, gradient clipping 1.0, at most {c0['epochs']} epochs. All 6 models were trained on NEU Explorer HPC GPUs: the prefix models on a {html.escape(gpus['prefix'])}, the cross-attention models on a {html.escape(gpus['cross'])}.</li>
 </ul>
 <h3>1.4 Decoding strategies</h3>
 <ul>
@@ -160,6 +171,7 @@ def main():
 <h2 class="pb">2. Results</h2>
 <h3>2.1 Training</h3>
 {table(train, ["Injection", "Fine-tuning", "Trainable params (M)", "Best epoch", "Best val loss", "Val loss @ epoch 5", "Train min"])}
+<div class="cap">Table 1. Training summary. Val loss is the per-token loss on the 4,000 model-selection images.</div>
 {fig("val_loss_by_strategy.png", "88%", "Figure 1. Validation loss on the model-selection images after each epoch.")}
 {T['training']}
 
@@ -169,7 +181,7 @@ def main():
 {fig("finetuning_comparison.png", "96%", "Figure 2. CIDEr, METEOR and CLIPScore by fine-tuning strategy and injection method (beam-3, 1,000 test images).")}
 {T['finetuning']}
 
-<h3 class="pb">2.3 Parameter sensitivity</h3>
+<h3>2.3 Parameter sensitivity</h3>
 <p><b>Beam width.</b></p>
 {fig("sensitivity_beam_width.png", "100%", "Figure 3. Effect of beam width (1 = greedy) for the two fully fine-tuned models.")}
 {T['beam']}
@@ -178,20 +190,23 @@ def main():
 {T['temperature']}
 <p><b>Injection method.</b> {T['injection']}</p>
 
-<h3 class="pb">2.4 Decoding strategies compared</h3>
+<h3>2.4 Decoding strategies compared</h3>
 {fig("accuracy_vs_diversity.png", "74%", "Figure 5. Accuracy (CIDEr) against diversity (distinct-2) for every decoding setting. Labels are shown for the cross-attention model.")}
 <p><b>Prefix conditioning, full fine-tuning</b></p>
 {table(dec_rows("prefix"), ["Decoding"] + M + ["distinct-2", "Unique", "Sec/img"], bold_max=M)}
+<div class="cap">Table 3. Every decoding setting, prefix conditioning (full fine-tuning). Bold marks the best value in each column.</div>
 <p><b>Cross-attention, full fine-tuning</b></p>
 {table(dec_rows("cross"), ["Decoding"] + M + ["distinct-2", "Unique", "Sec/img"], bold_max=M)}
+<div class="cap">Table 4. Every decoding setting, cross-attention (full fine-tuning).</div>
 {T['decoding']}
 
-<h3 class="pb">2.5 Qualitative alignment between image and caption</h3>
+<h3>2.5 Qualitative alignment between image and caption</h3>
 <p>The examples below use the best model by CIDEr ({html.escape(qs['best_tag'].replace('_', ', '))}, beam-3). Across the 1,000 test images, the per-image correlation between the reference-free CLIPScore and the reference-based CIDEr is r = {qs['corr_cider_clipscore']:.2f}.</p>
-{fig("qualitative_grid.png", "100%", "Figure 6. Eight random test images: captions from greedy, beam-3 and nucleus (p = 0.9) decoding, one of the five human references, and the beam-3 scores.")}
+<table><tr><th>Image</th><th>Generated captions and one human reference</th><th>CLIPScore</th><th>CIDEr</th></tr>{rand_rows}</table>
+<div class="cap">Table 5. Eight random test images (scores are for the beam-3 caption). The same examples as an image grid are in <code>results/m3/figures/qualitative_grid.png</code>.</div>
 <table><tr><th>Image</th><th>Caption (beam-3) and reference</th><th>CLIPScore</th><th>CIDEr</th></tr>{qual_rows}</table>
-<div class="cap">Table 3. Test images with the highest and lowest CLIPScore.</div>
-{fig("cider_vs_clipscore.png", "52%", "Figure 7. Per-image CIDEr against CLIPScore (beam-3).")}
+<div class="cap">Table 6. Test images with the highest and lowest CLIPScore.</div>
+{fig("cider_vs_clipscore.png", "50%", "Figure 6. Per-image CIDEr against CLIPScore (beam-3).")}
 {T['qualitative']}
 
 <h3>2.6 Summary of findings</h3>

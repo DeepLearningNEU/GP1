@@ -23,6 +23,11 @@ Text-to-image pipeline: **CLIP ViT-L/14 text encoder (Transformer)** → **Stabl
 | `scripts/m2_figures.py`, `scripts/m2_report.py` | M2: figures and the report PDF |
 | `results/m2_caption/` | M2 training logs, caption samples, decoding comparison, figures |
 | `docs/milestone2_report.pdf` | Milestone 2 report (front page, training log, early caption samples, observations) |
+| `scripts/eval_m3.py` | M3: BLEU-1..4, METEOR, ROUGE-L, CIDEr, CLIPScore and diversity for any decoding setting (greedy / beam:K / sample:T / nucleus:P:T) |
+| `notebooks/03_evaluation.ipynb` | M3 evaluation notebook: all tables and plots (fine-tuning strategies, beam width, temperature, injection method, decoding, qualitative) |
+| `slurm/m3_gpu.sbatch`, `slurm/m3_notebook.sbatch` | M3 jobs: train full / LoRA / frozen GPT-2 for one injection method and evaluate; then run the notebook |
+| `results/m3/` | M3 metrics per model (`<injection>_<finetune>/metrics.csv`, `captions.jsonl`), `tables/`, `figures/` |
+| `docs/milestone3_report.pdf` | Milestone 3 report (methods and results) |
 
 ## Data
 
@@ -41,6 +46,8 @@ sbatch slurm/setup_env.sbatch      # conda env at ~/gp1_env (Python 3.11, CUDA 1
 sbatch slurm/prepare_data.sbatch   # COCO -> /scratch/$USER/gp1/data, caches SD v1.5 weights
 sbatch slurm/m1_gpu.sbatch         # runs the M1 notebook + 5 prompt->image samples on a GPU
 sbatch slurm/m2_gpu.sbatch         # M2: CLIP features, train both captioners, decoding study, figures (~1.5 h on a P100)
+sbatch slurm/m3_gpu.sbatch prefix  # M3: full / LoRA / frozen GPT-2 + evaluation (also run with: cross)
+sbatch slurm/m3_notebook.sbatch    # M3: evaluation notebook -> results/m3/tables, results/m3/figures
 ```
 
 Paths are set in `slurm/env.sh` (`GP1_DATA`, `HF_HOME`). On another machine, install `requirements.txt`, set the same variables, and run the scripts directly:
@@ -54,5 +61,5 @@ python scripts/generate.py --prompts prompts/m1_test.txt --out results/m1_test -
 
 - [x] M1 — Setup and dataset preparation: environment, 5000 COCO pairs, image → embedding notebook with GPT-2 tokenization, 5 image:caption test runs, proposal
 - [x] M2 — CLIP image encoder + GPT-2 decoder (prefix conditioning and cross-attention), baseline captions, decoding strategies
-- [ ] M3 — Evaluation: FID / IS on 5000 images, prompt–image alignment, parameter sensitivity
+- [x] M3 — Evaluation: BLEU / METEOR / ROUGE-L / CIDEr / CLIPScore on 1,000 held-out images; beam width, temperature, injection method; full vs. LoRA vs. prefix tuning
 - [ ] M4 — Final report, gallery, presentation

@@ -1,0 +1,4 @@
+tag,injection,finetune,strategy,family,value,BLEU-1,BLEU-2,BLEU-3,BLEU-4,METEOR,ROUGE-L,CIDEr,CLIPScore,avg_words,distinct-1,distinct-2,unique_captions,repeated_bigram,sec_per_image,n_images,epoch
+cross_lora,cross,lora,greedy,greedy,,0.726,0.56,0.4104,0.2949,0.2593,0.5347,1.0179,0.6069,9.949,0.0573,0.2073,0.932,0.135,0.0324,1000,3
+cross_lora,cross,lora,beam:3,beam width,3,0.733,0.57,0.4256,0.3131,0.2679,0.5466,1.0727,0.6058,9.941,0.0545,0.1861,0.899,0.095,0.0972,1000,3
+cross_lora,cross,lora,nucleus:0.9:1.0,top-p,0.9,0.5767,0.3829,0.2442,0.1579,0.2066,0.4254,0.6004,0.5659,10.776,0.1204,0.4376,0.999,0.078,0.0459,1000,3
